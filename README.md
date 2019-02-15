@@ -1,9 +1,12 @@
-## EE459_project
+# EE459_project
 
 ## Resources  
 
-#LCD Touchscreen  
+### LCD Touchscreen  
 https://www.adafruit.com/product/2090  
 
-#GPS module  
+### GPS module  
 https://www.adafruit.com/product/746  
+
+### RFID/NFC receiver  
+https://www.adafruit.com/product/364
