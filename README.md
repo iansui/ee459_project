@@ -5,6 +5,9 @@
 ### LCD Touchscreen  
 https://www.adafruit.com/product/2090  
 
+### MicroSD card reader
+https://www.adafruit.com/product/254
+
 ### GPS module  
 https://www.adafruit.com/product/746  
 
