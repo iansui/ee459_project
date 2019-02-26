@@ -14,9 +14,15 @@ https://www.adafruit.com/product/746
 ### RFID/NFC receiver  
 https://www.adafruit.com/product/364
 
+
+
 ## Resources 
 
 ### I2C Protocol
 https://learn.sparkfun.com/tutorials/i2c/all
 
 ### SPI Protocol
+https://learn.sparkfun.com/tutorials/serial-peripheral-interface-spi/all
+
+### USART Protocol
+http://web.engr.oregonstate.edu/~traylor/ece473/lectures/uart.pdf
