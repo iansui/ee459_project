@@ -50,9 +50,9 @@ int main(void)
 
 			//We should now have date, time, and location data accessible here
 			snprintf(output_buf, sizeof(output_buf), "Date: Day: %u, Month: %u, Year: %u, \r\n"
-						"Time: %u:%u:%u\r\nLocation: %f%c, %f%c, Fix: %d\r\n"
+						"Time: %u:%u:%u\r\nLocation: %f%c, %f%c, Fix: %d,%c \r\n"
 						", Fix quality: %u, Num Satellites: %u\r\n", day, month, year, hour, minute, 
-						seconds, latitude, lat, longitude, lon, fix, fixquality, satellites);
+						seconds, latitude, lat, longitude, lon, gps_fix, gps_char, fixquality, satellites);
 			input_len = strlen(output_buf);
 			//output_buf[input_len + 1] = '\r';
 			//output_buf[input_len + 1] = '\n';

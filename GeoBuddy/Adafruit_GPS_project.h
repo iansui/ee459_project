@@ -116,7 +116,8 @@ float latitudeDegrees, longitudeDegrees;
 float geoidheight, altitude;
 float speed, angle, magvariation, HDOP;
 char lat, lon, mag;
-bool fix;
+bool gps_fix;
+char gps_char;
 uint8_t fixquality, satellites;
 
 //bool waitForSentence(const char *wait, uint8_t max = MAXWAITSENTENCE);

@@ -67,6 +67,7 @@ bool gps_parse(char *nmea) {
   char degreebuff[10];
   // look for a few common sentences
   if (strstr(nmea, "$GPGGA")) {
+    gps_char = 'G';
     // found GGA
     char *p = nmea;
     // get time
@@ -171,6 +172,7 @@ bool gps_parse(char *nmea) {
   }
   if (strstr(nmea, "$GPRMC")) {
    // found RMC
+   
     char *p = nmea;
 
     // get time
@@ -185,10 +187,11 @@ bool gps_parse(char *nmea) {
 
     p = strchr(p, ',')+1;
     // Serial.println(p);
+    gps_char = p[0];
     if (p[0] == 'A') 
-      fix = true;
+      gps_fix = true;
     else if (p[0] == 'V')
-      fix = false;
+      gps_fix = false;
     else
       return false;
 
@@ -357,7 +360,8 @@ void gps_common_init(void) {
   hour = minute = seconds = year = month = day =
     fixquality = satellites = 0; // uint8_t
   lat = lon = mag = 0; // char
-  fix = false; // boolean
+  gps_fix = false; // boolean
+  gps_char = 'i';
   milliseconds = 0; // uint16_t
   latitude = longitude = geoidheight = altitude =
     speed = angle = magvariation = HDOP = 0.0; // float
