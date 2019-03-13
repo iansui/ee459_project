@@ -13,7 +13,10 @@ int main(void)
 	char input; 
 	char temp[100];
 	char output_buf[256]; 
-	char gps_output_buf[256];
+
+	char longitude_str[20];
+	char latitude_str[20];
+		
 	int input_len;
 	// Initialize the serial and gps interface
 	serial_init();
@@ -72,10 +75,14 @@ int main(void)
 		}
 
 		if(count > 300){
+			
+			dtostrf(latitude, 5, 5, latitude_str);			
+			dtostrf(longitude, 5, 5, longitude_str);
+
 			snprintf(output_buf, sizeof(output_buf), "Date: Day: %u, Month: %u, Year: %u, \r\n"
-							"Time: %u:%u:%u\r\nLocation: %f%c, %f%c, Fix: %d\r\n"
+							"Time: %u:%u:%u\r\nLocation: %s%c, %s%c, Fix: %d\r\n"
 							", Fix quality: %u, Num Satellites: %u\r\n", day, month, year, hour, minute, 
-							seconds, latitude, lat, longitude, lon, fix, fixquality, satellites);
+							seconds, latitude_str, lat, longitude_str, lon, fix, fixquality, satellites);
 			input_len = strlen(output_buf);
 			serial_string_out(output_buf);
 			memset(output_buf, 0, sizeof output_buf);
