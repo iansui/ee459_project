@@ -66,8 +66,11 @@ bool gps_parse(char *nmea) {
   long minutes;
   char degreebuff[10];
   // look for a few common sentences
+
+  // serial_string_out(nmea);
+
+
   if (strstr(nmea, "$GPGGA")) {
-    gps_char = 'G';
     // found GGA
     char *p = nmea;
     // get time
@@ -172,7 +175,6 @@ bool gps_parse(char *nmea) {
   }
   if (strstr(nmea, "$GPRMC")) {
    // found RMC
-   
     char *p = nmea;
 
     // get time
@@ -187,11 +189,10 @@ bool gps_parse(char *nmea) {
 
     p = strchr(p, ',')+1;
     // Serial.println(p);
-    gps_char = p[0];
     if (p[0] == 'A') 
-      gps_fix = true;
+      fix = true;
     else if (p[0] == 'V')
-      gps_fix = false;
+      fix = false;
     else
       return false;
 
@@ -282,29 +283,25 @@ bool gps_parse(char *nmea) {
 }
 
 char gps_read(void) {
+  // char c = 0;
+
+  // int temp_index = 0;
+  // char temp[100];
+
+  // while(1){
+  //   temp[temp_index++] = serial_in();
+
+  //   if(temp[temp_index] == '\n'){
+  //     break;
+  //   }
+  // }
+
+  // return temp;
+
   char c = 0;
   
-  //if (paused) return c;
-
-/*#if defined(__AVR__) && defined(USE_SW_SERIAL)
-  if(gpsSwSerial) {
-    if(!gpsSwSerial->available()) return c;
-    c = gpsSwSerial->read();
-  } else 
-#endif
-  {
-    if(!gpsHwSerial->available()) return c;
-    c = gpsHwSerial->read();
-  }*/
   c = serial_in();
 
-
-  //Serial.print(c);
-
-//  if (c == '$') {         //please don't eat the dollar sign - rdl 9/15/14
-//    currentline[lineidx] = 0;
-//    lineidx = 0;
-//  }
   if (c == '\n') {
     currentline[lineidx] = 0;
 
@@ -316,9 +313,6 @@ char gps_read(void) {
       lastline = line2;
     }
 
-    //Serial.println("----");
-    //Serial.println((char *)lastline);
-    //Serial.println("----");
     lineidx = 0;
     recvdflag = true;
   }
@@ -329,6 +323,7 @@ char gps_read(void) {
 
   return c;
 }
+
 
 /*#if defined(__AVR__) && defined(USE_SW_SERIAL)
 // Constructor when using SoftwareSerial or NewSoftSerial
@@ -360,8 +355,7 @@ void gps_common_init(void) {
   hour = minute = seconds = year = month = day =
     fixquality = satellites = 0; // uint8_t
   lat = lon = mag = 0; // char
-  gps_fix = false; // boolean
-  gps_char = 'i';
+  fix = false; // boolean
   milliseconds = 0; // uint16_t
   latitude = longitude = geoidheight = altitude =
     speed = angle = magvariation = HDOP = 0.0; // float

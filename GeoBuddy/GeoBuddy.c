@@ -11,6 +11,7 @@
 int main(void)
 {
 	char input; 
+	char temp[100];
 	char output_buf[256]; 
 	char gps_output_buf[256];
 	int input_len;
@@ -19,15 +20,22 @@ int main(void)
 	gps_common_init();
 
 	//From here, we just want to continuously poll the gps for data and try to display that data
+	int count = 0;
 	while(1)
 	{
 		_delay_ms(1);
+				
+		/************* use the following block to print out raw data from the gps module */
 
-		
-		//input = serial_in(); 
-		//serial_out(input);
+		// input = serial_in(); 
+		// serial_out(input);
 
+		/*************************************************************** **********/
+
+
+		/***** use the following block to print out gps data as a raw string */
 		//For testing, we will send this string out to the console anyway to check we are getting the right data in the main loop
+		
 		//strcpy(output_buf, "Raw GPS Data: ");
 		//strcpy(output_buf, input);
 		//input_len = strlen(output_buf);
@@ -38,9 +46,14 @@ int main(void)
 		//snprintf(output_buf, sizeof(output_buf), "Raw GPS Data: %s\n", input);
 		//serial_string_out(output_buf);
 		//memset(output_buf, 0, sizeof output_buf);
+
+		/**************************************************************************/
 		
 		
 		input = gps_read();
+		//strcpy(temp, gps_read());
+		count++;
+		//serial_string_out(temp);
 
 		//Check if the data is new (Uncomment as testing proceeds)
 		if(gps_newNMEAreceived() == true)
@@ -49,16 +62,24 @@ int main(void)
 			gps_parse(gps_lastNMEA()); 
 
 			//We should now have date, time, and location data accessible here
-			snprintf(output_buf, sizeof(output_buf), "Date: Day: %u, Month: %u, Year: %u, \r\n"
-						"Time: %u:%u:%u\r\nLocation: %f%c, %f%c, Fix: %d,%c \r\n"
-						", Fix quality: %u, Num Satellites: %u\r\n", day, month, year, hour, minute, 
-						seconds, latitude, lat, longitude, lon, gps_fix, gps_char, fixquality, satellites);
-			input_len = strlen(output_buf);
+			
+			//input_len = strlen(output_buf);
 			//output_buf[input_len + 1] = '\r';
 			//output_buf[input_len + 1] = '\n';
 			//output_buf[input_len + 2] = '\0';
+			//serial_string_out(output_buf);
+			//memset(output_buf, 0, sizeof output_buf);
+		}
+
+		if(count > 300){
+			snprintf(output_buf, sizeof(output_buf), "Date: Day: %u, Month: %u, Year: %u, \r\n"
+							"Time: %u:%u:%u\r\nLocation: %f%c, %f%c, Fix: %d\r\n"
+							", Fix quality: %u, Num Satellites: %u\r\n", day, month, year, hour, minute, 
+							seconds, latitude, lat, longitude, lon, fix, fixquality, satellites);
+			input_len = strlen(output_buf);
 			serial_string_out(output_buf);
 			memset(output_buf, 0, sizeof output_buf);
+			count = 0;
 		}
 
 	}
