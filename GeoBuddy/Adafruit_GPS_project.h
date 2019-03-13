@@ -4,16 +4,6 @@
 //comment this out if you don't want to include software serial in the library
 //#define USE_SW_SERIAL
 
-/*
-#if defined(__AVR__) && defined(USE_SW_SERIAL)
-  #if ARDUINO >= 100
-    #include <SoftwareSerial.h>
-  #else
-    #include <NewSoftSerial.h>
-  #endif
-#endif
-*/
-
 // different commands to set the update rate from once a second (1 Hz) to 10 times a second (10Hz)
 // Note that these only control the rate at which the position is echoed, to actually speed up the
 // position fix you must also send one of the position fix rate commands below too.
@@ -120,7 +110,6 @@ bool fix;
 uint8_t fixquality, satellites;
 
 //bool waitForSentence(const char *wait, uint8_t max = MAXWAITSENTENCE);
-bool waitForSentence(const char *wait);
 bool LOCUS_StartLogger(void);
 bool LOCUS_StopLogger(void);
 bool LOCUS_ReadStatus(void);

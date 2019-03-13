@@ -1,23 +1,4 @@
-/***********************************
-This is our GPS library
 
-Adafruit invests time and resources providing this open source code,
-please support Adafruit and open-source hardware by purchasing
-products from Adafruit!
-
-Written by Limor Fried/Ladyada for Adafruit Industries.
-BSD license, check license.txt for more information
-All text above must be included in any redistribution
-****************************************/
-
-/*BRIANS NOTE: Changes have been made to this from the original cpp file to 
-                  strip the c++ class elements and integrate our own serial
-                  module to the code instead of using the previous */
-
-/*#if defined(__AVR__) && defined(USE_SW_SERIAL)
-  // Only include software serial on AVR platforms (i.e. not on Due).
-  #include <SoftwareSerial.h>
-#endif*/
 #include <avr/io.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -66,9 +47,6 @@ bool gps_parse(char *nmea) {
   long minutes;
   char degreebuff[10];
   // look for a few common sentences
-
-  // serial_string_out(nmea);
-
 
   if (strstr(nmea, "$GPGGA")) {
     // found GGA
@@ -283,20 +261,6 @@ bool gps_parse(char *nmea) {
 }
 
 char gps_read(void) {
-  // char c = 0;
-
-  // int temp_index = 0;
-  // char temp[100];
-
-  // while(1){
-  //   temp[temp_index++] = serial_in();
-
-  //   if(temp[temp_index] == '\n'){
-  //     break;
-  //   }
-  // }
-
-  // return temp;
 
   char c = 0;
   
@@ -324,26 +288,6 @@ char gps_read(void) {
   return c;
 }
 
-
-/*#if defined(__AVR__) && defined(USE_SW_SERIAL)
-// Constructor when using SoftwareSerial or NewSoftSerial
-#if ARDUINO >= 100
-Adafruit_GPS::Adafruit_GPS(SoftwareSerial *ser)
-#else
-Adafruit_GPS::Adafruit_GPS(NewSoftSerial *ser) 
-#endif
-{
-  common_init();     // Set everything to common state, then...
-  gpsSwSerial = ser; // ...override gpsSwSerial with value passed.
-}
-#endif*/
-
-// Constructor when using HardwareSerial
-/*Adafruit_GPS::Adafruit_GPS(HardwareSerial *ser) {
-  common_init();  // Set everything to common state, then...
-  gpsHwSerial = ser; // ...override gpsHwSerial with value passed.
-}*/
-
 // Initialization code 
 void gps_common_init(void) {
   recvdflag   = false;
@@ -359,29 +303,6 @@ void gps_common_init(void) {
   milliseconds = 0; // uint16_t
   latitude = longitude = geoidheight = altitude =
     speed = angle = magvariation = HDOP = 0.0; // float
-}
-
-/*
-void gps_begin(uint32_t baud)
-{
-#if defined(__AVR__) && defined(USE_SW_SERIAL)
-  if(gpsSwSerial) 
-    gpsSwSerial->begin(baud);
-  else 
-#endif
-    gpsHwSerial->begin(baud);
-
-  delay(10);
-}*/
-
-void gps_sendCommand(const char *str) {
-/* Note used since we do not talk to the gps */
-/*#if defined(__AVR__) && defined(USE_SW_SERIAL)
-  if(gpsSwSerial) 
-    gpsSwSerial->println(str);
-  else    
-#endif
-    gpsHwSerial->println(str);*/
 }
 
 bool gps_newNMEAreceived(void) {
@@ -410,130 +331,3 @@ uint8_t parseHex(char c) {
     // if (c > 'F')
     return 0;
 }
-
-bool waitForSentence(const char *wait4me) {
-  char str[20];
-  uint8_t max = MAXWAITSENTENCE;
-
-  uint8_t i=0;
-  while (i < max) {
-    gps_read();
-
-    if (gps_newNMEAreceived()) { 
-      char *nmea = gps_lastNMEA();
-      strncpy(str, nmea, 20);
-      str[19] = 0;
-      i++;
-
-        if (strstr(str, wait4me))
-	return true;
-    }
-  }
-
-  return false;
-}
-
-/* Commented out for testing 
-bool waitForSentence(const char *wait4me, uint8_t max) {
-  char str[20];
-
-  uint8_t i=0;
-  while (i < max) {
-    read();
-
-    if (newNMEAreceived()) { 
-      char *nmea = lastNMEA();
-      strncpy(str, nmea, 20);
-      str[19] = 0;
-      i++;
-
-        if (strstr(str, wait4me))
-  return true;
-    }
-  }
-
-  return false;
-} */
-
-/*
-bool LOCUS_StartLogger(void) {
-  sendCommand(PMTK_LOCUS_STARTLOG);
-  recvdflag = false;
-  return waitForSentence(PMTK_LOCUS_STARTSTOPACK);
-}
-
-bool LOCUS_StopLogger(void) {
-  sendCommand(PMTK_LOCUS_STOPLOG);
-  recvdflag = false;
-  return waitForSentence(PMTK_LOCUS_STARTSTOPACK);
-}
-
-bool LOCUS_ReadStatus(void) {
-  gps_sendCommand(PMTK_LOCUS_QUERY_STATUS);
-  
-  if (! waitForSentence("$PMTKLOG"))
-    return false;
-
-  char *response = gps_lastNMEA();
-  uint16_t parsed[10];
-  uint8_t i;
-  
-  for (i=0; i<10; i++) parsed[i] = -1;
-  
-  response = strchr(response, ',');
-  for (i=0; i<10; i++) {
-    if (!response || (response[0] == 0) || (response[0] == '*')) 
-      break;
-    response++;
-    parsed[i]=0;
-    while ((response[0] != ',') && 
-	   (response[0] != '*') && (response[0] != 0)) {
-      parsed[i] *= 10;
-      char c = response[0];
-      if (isDigit(c))
-        parsed[i] += c - '0';
-      else
-        parsed[i] = c;
-      response++;
-    }
-  }
-  LOCUS_serial = parsed[0];
-  LOCUS_type = parsed[1];
-  if (isAlpha(parsed[2])) {
-    parsed[2] = parsed[2] - 'a' + 10; 
-  }
-  LOCUS_mode = parsed[2];
-  LOCUS_config = parsed[3];
-  LOCUS_interval = parsed[4];
-  LOCUS_distance = parsed[5];
-  LOCUS_speed = parsed[6];
-  LOCUS_status = !parsed[7];
-  LOCUS_records = parsed[8];
-  LOCUS_percent = parsed[9];
-
-  return true;
-}
-
-// Standby Mode Switches
-bool gps_standby(void) {
-  if (inStandbyMode) {
-    return false;  // Returns false if already in standby mode, so that you do not wake it up by sending commands to GPS
-  }
-  else {
-    inStandbyMode = true;
-    gps_sendCommand(PMTK_STANDBY);
-    //return waitForSentence(PMTK_STANDBY_SUCCESS);  // don't seem to be fast enough to catch the message, or something else just is not working
-    return true;
-  }
-}
-
-bool gps_wakeup(void) {
-  if (inStandbyMode) {
-   inStandbyMode = false;
-    gps_sendCommand("");  // send byte to wake it up
-    return waitForSentence(PMTK_AWAKE);
-  }
-  else {
-      return false;  // Returns false if not in standby mode, nothing to wakeup
-  }
-}*/

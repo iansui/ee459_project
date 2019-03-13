@@ -54,26 +54,16 @@ int main(void)
 		
 		
 		input = gps_read();
-		//strcpy(temp, gps_read());
 		count++;
-		//serial_string_out(temp);
 
 		//Check if the data is new (Uncomment as testing proceeds)
 		if(gps_newNMEAreceived() == true)
 		{
-			//Parse data stored in Adafruit_GPS code
 			gps_parse(gps_lastNMEA()); 
-
-			//We should now have date, time, and location data accessible here
-			
-			//input_len = strlen(output_buf);
-			//output_buf[input_len + 1] = '\r';
-			//output_buf[input_len + 1] = '\n';
-			//output_buf[input_len + 2] = '\0';
-			//serial_string_out(output_buf);
-			//memset(output_buf, 0, sizeof output_buf);
 		}
 
+
+		//****************  output parsed GPS data  ******/
 		if(count > 300){
 			
 			dtostrf(latitude, 5, 5, latitude_str);			
