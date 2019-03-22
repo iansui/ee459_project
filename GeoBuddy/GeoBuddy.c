@@ -7,6 +7,8 @@
 #include <avr/eeprom.h>
 #include "Adafruit_GPS_project.h"
 #include "serial.h"
+#include "string.h"
+#include <stdlib.h>
 
 void update_user_position(){
 
@@ -49,8 +51,8 @@ int main(void){
 		//update user position
 		gps_iteration_count++;
 		gps_read();
-		if(gps_iteration_count > 300){
-			update_user_position();
+		if(gps_iteration_count > 200){
+			update_user_position(); 
 			gps_iteration_count = 0;
 		}
 		//end of user position update
