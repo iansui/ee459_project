@@ -23,7 +23,6 @@ volatile char *lastline;
 volatile bool recvdflag;
 volatile bool inStandbyMode;
 
-
 bool gps_parse(char *nmea) {
   // do checksum check
 
