@@ -9,6 +9,7 @@
 #include "serial.h"
 #include "string.h"
 #include <stdlib.h>
+#include <math.h>
 
 void update_user_position(){
 
@@ -29,6 +30,32 @@ void update_user_position(){
 
 	serial_string_out(output_buf);
 	memset(output_buf, 0, sizeof(output_buf));
+}
+
+double distance(double goal_lat, double goal_long){
+
+	// var R = 6371e3; // meters
+	// var φ1 = lat1.toRadians();
+	// var φ2 = lat2.toRadians();
+	// var Δφ = (lat2-lat1).toRadians();
+	// var Δλ = (lon2-lon1).toRadians();
+
+	// var a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+	// 		Math.cos(φ1) * Math.cos(φ2) *
+	// 		Math.sin(Δλ/2) * Math.sin(Δλ/2);
+	// var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+	// var d = R * c;
+
+	long int R = 6371000;
+	double curr_lat_rad = latitude * M_PI / 180;
+	double goal_lat_rad = goal_lat * M_PI / 180;
+	double lat_diff = (goal_lat - latitude) * M_PI / 180;
+	double long_diff = (goal_long - longitude) * M_PI / 180;
+	double a = sin(lat_diff/2) * sin(lat_diff/2) + cos(curr_lat_rad) * cos(goal_lat_rad) * sin(long_diff/2) * sin(long_diff/2);
+	double c = 2 * atan2(sqrt(a), sqrt(1-a));
+	double distance = R * c;
+	return distance;
 }
 
 int main(void){
