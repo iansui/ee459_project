@@ -18,12 +18,12 @@ void update_user_position(){
 	char output_buf[256];
 
 	//****************  output parsed GPS data  ******/		
-	dtostrf(latitude_decimal, 12, 7, latitude_str);			
-	dtostrf(longitude_decimal, 12, 7, longitude_str);
+	dtostrf(latitudeDegrees, 10, 7, latitude_str);	
+	dtostrf(longitudeDegrees, 10, 7, longitude_str);
 
 	snprintf(output_buf, sizeof(output_buf), "DateTime: %u-%u-%u %u:%u:%u \r\n"
 					"Location: %c %s, %c %s\r\n"
-					"Fix: %d, Fix quality: %u, Num Satellites: %u\r\n\r\n",
+					"Fix: %d, Fix quality: %u, Num Satellites: %u\r\n",
 					year, month, day, hour, minute, seconds, 
 					lat, latitude_str, lon, longitude_str,
 					fix, fixquality, satellites);
@@ -32,30 +32,34 @@ void update_user_position(){
 	memset(output_buf, 0, sizeof(output_buf));
 }
 
-double distance(double goal_lat, double goal_long){
+void distance(double goal_lat, double goal_long){
 
 	// var R = 6371e3; // meters
 	// var φ1 = lat1.toRadians();
 	// var φ2 = lat2.toRadians();
 	// var Δφ = (lat2-lat1).toRadians();
 	// var Δλ = (lon2-lon1).toRadians();
-
 	// var a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
 	// 		Math.cos(φ1) * Math.cos(φ2) *
 	// 		Math.sin(Δλ/2) * Math.sin(Δλ/2);
 	// var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
 	// var d = R * c;
 
 	long int R = 6371000;
-	double curr_lat_rad = latitude * M_PI / 180;
+	double curr_lat_rad = latitudeDegrees * M_PI / 180;
 	double goal_lat_rad = goal_lat * M_PI / 180;
-	double lat_diff = (goal_lat - latitude) * M_PI / 180;
-	double long_diff = (goal_long - longitude) * M_PI / 180;
+	double lat_diff = (goal_lat - latitudeDegrees) * M_PI / 180;
+	double long_diff = (goal_long - longitudeDegrees) * M_PI / 180;
 	double a = sin(lat_diff/2) * sin(lat_diff/2) + cos(curr_lat_rad) * cos(goal_lat_rad) * sin(long_diff/2) * sin(long_diff/2);
 	double c = 2 * atan2(sqrt(a), sqrt(1-a));
 	double distance = R * c;
-	return distance;
+
+	char distance_str[20];
+	char output_buf[256];
+	dtostrf(distance, 12, 7, distance_str);			
+	snprintf(output_buf, sizeof(output_buf), "Distance: %s meters\r\n\r\n", distance_str);
+	serial_string_out(output_buf);
+	memset(output_buf, 0, sizeof(output_buf));
 }
 
 int main(void){
@@ -65,6 +69,10 @@ int main(void){
 	gps_common_init();
 
 	int gps_iteration_count = 0;
+
+	//dummy is set to the rough location of the lab room
+	double dummy_lat = 34.020520;
+	double dummy_long = -118.289709;
 
 	while(1){
 
@@ -77,8 +85,9 @@ int main(void){
 		if(gps_newNMEAreceived() == true){
 			gps_parse(gps_lastNMEA()); 
 		}
-		if(gps_iteration_count > 200){
+		if(gps_iteration_count > 300){
 			update_user_position(); 
+			distance(dummy_lat, dummy_long);
 			gps_iteration_count = 0;
 		}
 		//end of user position update
