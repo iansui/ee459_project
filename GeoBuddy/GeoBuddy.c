@@ -21,12 +21,22 @@ void update_user_position(){
 	dtostrf(latitudeDegrees, 10, 7, latitude_str);	
 	dtostrf(longitudeDegrees, 10, 7, longitude_str);
 
-	snprintf(output_buf, sizeof(output_buf), "DateTime: %u-%u-%u %u:%u:%u \r\n"
+	if(fix == 0){
+
+		snprintf(output_buf, sizeof(output_buf), "DateTime: %u-%u-%u %u:%u:%u \r\n"
+					"Fix: %d, Fix quality: %u, Num Satellites: %u\r\n",
+					year, month, day, hour, minute, seconds, 
+					fix, fixquality, satellites);
+	}
+	else{
+		snprintf(output_buf, sizeof(output_buf), "DateTime: %u-%u-%u %u:%u:%u \r\n"
 					"Location: %c %s, %c %s\r\n"
 					"Fix: %d, Fix quality: %u, Num Satellites: %u\r\n",
 					year, month, day, hour, minute, seconds, 
 					lat, latitude_str, lon, longitude_str,
 					fix, fixquality, satellites);
+
+	}
 
 	serial_string_out(output_buf);
 	memset(output_buf, 0, sizeof(output_buf));
@@ -45,6 +55,10 @@ void distance(double goal_lat, double goal_long){
 	// var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 	// var d = R * c;
 
+	if(fix == 0){
+		return;
+	}
+
 	long int R = 6371000;
 	double curr_lat_rad = latitudeDegrees * M_PI / 180;
 	double goal_lat_rad = goal_lat * M_PI / 180;
@@ -55,9 +69,21 @@ void distance(double goal_lat, double goal_long){
 	double distance = R * c;
 
 	char distance_str[20];
+	char goal_lat_str[20];
+	char goal_long_str[20];
+	char longitude_str[20];
+	char latitude_str[20];
+	dtostrf(latitudeDegrees, 10, 7, latitude_str);	
+	dtostrf(longitudeDegrees, 10, 7, longitude_str);
+	dtostrf(goal_lat, 10, 7, goal_lat_str);	
+	dtostrf(goal_long, 10, 7, goal_long_str);
 	char output_buf[256];
 	dtostrf(distance, 12, 7, distance_str);			
-	snprintf(output_buf, sizeof(output_buf), "Distance: %s meters\r\n\r\n", distance_str);
+	snprintf(output_buf, sizeof(output_buf),
+	 "Distance: %s meters\r\n"
+	 "Goal loc: %s, %s\r\n"
+	 "Current: %s, %s\r\n"
+	 , distance_str, goal_lat_str, goal_long_str, latitude_str, longitude_str);
 	serial_string_out(output_buf);
 	memset(output_buf, 0, sizeof(output_buf));
 }
