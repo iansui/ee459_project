@@ -67,8 +67,10 @@ paired with a hardware-specific library for each display device we carry
 */
 /**************************************************************************/
 void init_GFX(int16_t w, int16_t h){
-    _width    = w;
-    _height   = h;
+    WIDTH = w;
+    HEIGHT = h;
+    _width    = WIDTH;
+    _height   = HEIGHT;
     rotation  = 0;
     cursor_y  = cursor_x    = 0;
     textsize  = 1;
