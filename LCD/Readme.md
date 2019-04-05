@@ -1,5 +1,5 @@
 
-The GFX library
+/*The GFX library*/
 
 Need: the header file, the two font header file
 
