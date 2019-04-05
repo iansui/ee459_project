@@ -15,8 +15,10 @@ Adafruit_TFTLCD
 
 Need: Adafruit_TFTLCD.h, registers.h, pin_magic.h
 
+Manipulate and define the register for initialization and pixel drawing
+
 
 
 Adafruit_touchscreen
 
-
+Still working on this
