@@ -98,6 +98,9 @@ uint8_t hour, minute, seconds, year, month, day;
 uint16_t milliseconds;
   // Floating point latitude and longitude value in degrees.
 float latitude, longitude;
+
+float lat_comp, long_comp;
+
 double latitude_decimal, longitude_decimal;
   // Fixed point latitude and longitude value with degrees stored in units of 1/100000 degrees,
   // and minutes stored in units of 1/100000 degrees.  See pull #13 for more details:
