@@ -66,7 +66,7 @@ paired with a hardware-specific library for each display device we carry
    @param    h   Display height, in pixels
 */
 /**************************************************************************/
-void init_global_variable(int16_t w, int16_t h){
+void init_GFX(int16_t w, int16_t h){
     _width    = w;
     _height   = h;
     rotation  = 0;
