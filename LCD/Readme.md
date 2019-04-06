@@ -10,6 +10,8 @@ Need: Adafruit_GFX.h, gfxfont.h, glcdfont.h
 5) Button UI 
 6) Control of rotation, font, color
 
+https://github.com/adafruit/Adafruit-GFX-Library
+
 
 Adafruit_TFTLCD
 
@@ -17,6 +19,7 @@ Need: Adafruit_TFTLCD.h, registers.h, pin_magic.h
 
 Manipulate and define the register for initialization and pixel drawing
 
+https://github.com/adafruit/TFTLCD-Library
 
 
 Adafruit_touchscreen
