@@ -5,5 +5,6 @@ float lat_comp_signed;
 float long_comp_signed;	
 void update_user_position();
 void distance(double goal_lat, double goal_long);
+uint16_t goal_direction;
 
 #endif
