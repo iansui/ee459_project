@@ -56,21 +56,32 @@ uint16_t color565(uint8_t, uint8_t, uint8_t);
 
 #define LCD_CD      (1 << PC2)  // PORTB, bit 4 - LCD register select (0 = command (addr), 1 = data)
 #define LCD_RD      (1 << PC0)  // PORTB, bit 3 - LCD /RD (read)
-#define LCD_CS      (1 << PB2)  // PORTB, bit 2 - LCD /CE (chip enable)
-#define LCD_WR      (1 << PB5)  // PORTB, bit 5 - LCD /WR (write)
-#define LCD_RST     (1 << PB7)  // PORTB, bit 7 - LCD /RST (reset)
+#define LCD_CS      (1 << PC3)  // PORTB, bit 2 - LCD /CE (chip enable)
+#define LCD_WR      (1 << PC1)  // PORTB, bit 5 - LCD /WR (write)
+#define LCD_RST     (1 << PC6)  // PORTB, bit 7 - LCD /RST (reset)
 #define LCD_Ctrl_B  (LCD_CD|LCD_RD|LCD_CS|LCD_WR|LCD_RST)
 
-#define LCD_CD_Command    PORTB &= ~LCD_CD
-#define LCD_CD_Data       PORTB |= LCD_CD
-#define LCD_RD_Active     PORTB &= ~LCD_RD
-#define LCD_RD_Negate     PORTB |= LCD_RD
-#define LCD_CS_Active     PORTB &= ~LCD_CS
-#define LCD_CS_Negate     PORTB |= LCD_CS
-#define LCD_WR_Active     PORTB &= ~LCD_WR
-#define LCD_WR_Negate     PORTB |= LCD_WR
-#define LCD_RST_Active    PORTB &= ~LCD_RST
-#define LCD_RST_Negate    PORTB |= LCD_RST
+// #define LCD_CD_Command    PORTB &= ~LCD_CD
+// #define LCD_CD_Data       PORTB |= LCD_CD
+// #define LCD_RD_Active     PORTB &= ~LCD_RD
+// #define LCD_RD_Negate     PORTB |= LCD_RD
+// #define LCD_CS_Active     PORTB &= ~LCD_CS
+// #define LCD_CS_Negate     PORTB |= LCD_CS
+// #define LCD_WR_Active     PORTB &= ~LCD_WR
+// #define LCD_WR_Negate     PORTB |= LCD_WR
+// #define LCD_RST_Active    PORTB &= ~LCD_RST
+// #define LCD_RST_Negate    PORTB |= LCD_RST
+
+#define LCD_CD_Command    PORTC &= ~LCD_CD
+#define LCD_CD_Data       PORTC |= LCD_CD
+#define LCD_RD_Active     PORTC &= ~LCD_RD
+#define LCD_RD_Negate     PORTC |= LCD_RD
+#define LCD_CS_Active     PORTC &= ~LCD_CS
+#define LCD_CS_Negate     PORTC |= LCD_CS
+#define LCD_WR_Active     PORTC &= ~LCD_WR
+#define LCD_WR_Negate     PORTC |= LCD_WR
+#define LCD_RST_Active    PORTC &= ~LCD_RST
+#define LCD_RST_Negate    PORTC |= LCD_RST
 
 // Define names for the registers (from registers.h)
 
@@ -116,8 +127,8 @@ int main(void) {
     DDRB |= LCD_Data_B;         // Set PORTB bits 0-1 for output
     DDRD |= LCD_Data_D;         // Set PORTD bits 2-7 for output
 
-    PORTB |= LCD_Ctrl_B;        // Set all the control lines high
-    DDRB |= LCD_Ctrl_B;         // Set control port bits for output
+    PORTC |= LCD_Ctrl_B;        // Set all the control lines high
+    DDRC |= LCD_Ctrl_B;         // Set control port bits for output
 
     initialize();               // Initialize the LCD display
     
@@ -337,7 +348,7 @@ void reset()
 {
     uint8_t i;
 
-    PORTB |= LCD_Ctrl_B;        // Set all the control lines high
+    PORTC |= LCD_Ctrl_B;        // Set all the control lines high
 
     _delay_ms(100);     // Delay 100ms to let things settle
 
