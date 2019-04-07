@@ -302,3 +302,112 @@ void drawString(unsigned char* str, int size, int16_t x, int16_t y, uint16_t col
       drawChar(x+(i*6), y, str[i], color, 1);
     }
 }
+
+
+
+void drawHLine(int16_t x, int16_t y, int16_t length, uint16_t color)
+{
+    int16_t x_length = x+length-1;
+
+    if((length <= 0) ||  (y < 0) || ( y>=LCD_Height) 
+    ||(x>= LCD_Width) || ((x+length-1) <0)) 
+        return;
+
+    if (x_length >= LCD_Width)
+    {
+        x_length = LCD_Width-1;
+        length = x_length -x+1;
+    }
+    setAddrWindow(x,y,x2,y);
+    flood(color,length);
+    LCD_CS_Negate;
+}
+
+void drawVLine(int16_t x, int16_t y, int16_t length,uint16_t color)
+{
+    int16_t y_length = y+length-1;
+
+    if((length <= 0) ||  (y < 0) || ( y>=LCD_Height) 
+    ||(x>= LCD_Width) || ((y+length-1) <0)) 
+        return;
+
+    if (y_length >= LCD_Height)
+    {
+        y_length = LCD_Height-1;
+        length = y_length -x+1;
+    }
+    setAddrWindow(x,y,x,y2);
+    flood(color,length);
+    LCD_CS_Negate;
+}
+
+
+// Block Fill
+void flood(uint16_t color, uint32_t len)
+{
+    uint8_t i;
+    LCD_CS_Active;
+    LCD_CD_Command;
+    lcdout(0x2c);
+
+    // Write the 1st pixel
+    LCD_CD_Data;
+    lcdout(color >> 8); 
+    lcdout(color);
+    length = length-1;
+    uint16_t blocks = (uint16_t)(length/64);
+    if (color == (color <<8))
+    {
+        while(blocks--)
+        {
+            i = 16;
+            do
+            {
+                LCD_WR_Active;           LCD_WR_Negate;
+                LCD_WR_Active;           LCD_WR_Negate;
+                LCD_WR_Active;           LCD_WR_Negate;
+                LCD_WR_Active;           LCD_WR_Negate;
+                LCD_WR_Active;           LCD_WR_Negate;
+                LCD_WR_Active;           LCD_WR_Negate;
+                LCD_WR_Active;           LCD_WR_Negate;
+                LCD_WR_Active;           LCD_WR_Negate;
+                LCD_WR_Active;           LCD_WR_Negate;
+
+            }while(--i);
+        }
+        
+        for(i = (uint8_t)length & 63;i>=0;i--)
+        {
+            LCD_WR_Active;           LCD_WR_Negate;
+            LCD_WR_Active;           LCD_WR_Negate;
+        }
+
+    }
+    else
+    {
+        while(blocks--)
+        {
+            i = 16
+            do
+            {
+                lcdout(color >> 8);     lcdout(color);
+                lcdout(color >> 8);     lcdout(color);
+                lcdout(color >> 8);     lcdout(color);
+                lcdout(color >> 8);     lcdout(color);
+                lcdout(color >> 8);     lcdout(color);
+                lcdout(color >> 8);     lcdout(color);
+                lcdout(color >> 8);     lcdout(color);
+                lcdout(color >> 8);     lcdout(color);
+
+            }while(--i);
+        }
+        for(i = (uint8_t)length & 63;i>=0;i--)
+        {
+            lcdout(color >> 8);     lcdout(color);
+        }
+
+    }
+
+    LCD_CS_Negate;
+
+}
