@@ -450,16 +450,16 @@ void drawTri(int16_t x0, int16_t y0,int16_t x1, int16_t y1, int16_t x2, int16_t 
 {
     
    if (y0 > y1) {
-       swap(y0,y1);
-       swap(x0,x1);
+       _swap_int16_t(y0,y1);
+       _swap_int16_t(x0,x1);
     }
     if (y1 > y2) {
-        swap(y2, y1); 
-        swap(x2, x1);
+        _swap_int16_t(y2, y1); 
+        _swap_int16_t(x2, x1);
     }
     if (y0 > y1) {
-        swap(y0, y1); 
-        swap(x0, x1);
+        _swap_int16_t(y0, y1); 
+        _swap_int16_t(x0, x1);
     }
 
 
