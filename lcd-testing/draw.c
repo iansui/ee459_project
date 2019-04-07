@@ -265,7 +265,7 @@ void drawPixel(int16_t x, int16_t y, uint16_t color) {
 }
 
 
-void drawchar(int16_t x, int16_t y, unsigned char c, uint16_t color, uint8_t size)
+void drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color, uint8_t size)
 {
     // testing if the x,y is out of bound and whether the size of word can fit in
     if((x >= LCD_Width) || (y >= LCD_Height) || 

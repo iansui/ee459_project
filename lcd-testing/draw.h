@@ -25,7 +25,7 @@
 
 GFXfont  *gfxFont;
 
-void drawchar(int16_t x, int16_t y, unsigned char c, uint16_t color, uint8_t size);
+void drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color, uint8_t size);
 
 void color_bars();
 void boxes();

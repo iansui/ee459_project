@@ -41,7 +41,7 @@ int main(void) {
         //   }
         // }
 
-        drawchar(100, 100, 'L', color565(30, 255, 100), 1);
+        drawChar(100, 100, 'L', color565(30, 255, 100), 1);
         _delay_ms(1000);
 
 
