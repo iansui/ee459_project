@@ -41,7 +41,10 @@ int main(void) {
         //   }
         // }
 
-        drawChar(100, 100, 'L', color565(30, 255, 100), 1);
+        char str[5];
+        strcpy(str, "abc");
+        //drawChar(100, 100, 'P', color565(255, 30, 135), 1);
+        drawString(str, 5, 10, 10, color565(255, 255, 255));
         _delay_ms(1000);
 
 

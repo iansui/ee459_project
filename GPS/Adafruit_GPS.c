@@ -23,7 +23,6 @@ volatile char *lastline;
 volatile bool recvdflag;
 volatile bool inStandbyMode;
 
-
 bool gps_parse(char *nmea) {
   // do checksum check
 
@@ -75,7 +74,12 @@ bool gps_parse(char *nmea) {
       degreebuff[6] = '\0';
       minutes = (50 * atol(degreebuff) / 3);
       latitude_fixed = (degree + minutes);
+
+      lat_comp = (degree / 10000000)+(minutes * 0.000006F / 60);
+
+
       latitude = (degree / 100000 + minutes * 0.000006F);
+      latitude_decimal = (degree / 10000000) + minutes * 0.0000001F;
       latitudeDegrees = ((latitude-100*(int)(latitude/100))/60.0);
       latitudeDegrees += (int)(latitude/100);
     }
@@ -104,7 +108,11 @@ bool gps_parse(char *nmea) {
       degreebuff[6] = '\0';
       minutes = 50 * atol(degreebuff) / 3;
       longitude_fixed = degree + minutes;
+
+      long_comp = (degree / 10000000)+(minutes * 0.000006F / 60);
+
       longitude = degree / 100000 + minutes * 0.000006F;
+      longitude_decimal = (degree / 10000000) + minutes * 0.0000001F;
       longitudeDegrees = (longitude-100*(int)(longitude/100))/60.0;
       longitudeDegrees += (int)(longitude/100);
     }
@@ -188,7 +196,11 @@ bool gps_parse(char *nmea) {
       degreebuff[6] = '\0';
       long minutes = 50 * atol(degreebuff) / 3;
       latitude_fixed = degree + minutes;
+
+      lat_comp = (degree / 10000000)+(minutes * 0.000006F / 60);
+
       latitude = degree / 100000 + minutes * 0.000006F;
+      latitude_decimal = (degree / 10000000) + minutes * 0.0000001F;
       latitudeDegrees = (latitude-100*(int)(latitude/100))/60.0;
       latitudeDegrees += (int)(latitude/100);
     }
@@ -217,7 +229,12 @@ bool gps_parse(char *nmea) {
       degreebuff[6] = '\0';
       minutes = 50 * atol(degreebuff) / 3;
       longitude_fixed = degree + minutes;
+
+      long_comp = (degree / 10000000)+(minutes * 0.000006F / 60);
+
+
       longitude = degree / 100000 + minutes * 0.000006F;
+      longitude_decimal = (degree / 10000000) + minutes * 0.0000001F;
       longitudeDegrees = (longitude-100*(int)(longitude/100))/60.0;
       longitudeDegrees += (int)(longitude/100);
     }

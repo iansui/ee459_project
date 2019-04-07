@@ -249,7 +249,6 @@ uint16_t color565(uint8_t r, uint8_t g, uint8_t b)
 /*
 draw a pixel
 */
-
 void drawPixel(int16_t x, int16_t y, uint16_t color) {
   // Clip
   if((x < 0) || (y < 0) || (x >= LCD_Width) || (y >= LCD_Height)) return;
@@ -264,7 +263,9 @@ void drawPixel(int16_t x, int16_t y, uint16_t color) {
     lcdout(color);
 }
 
-
+/*
+draw a char
+*/
 void drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color, uint8_t size)
 {
     // testing if the x,y is out of bound and whether the size of word can fit in
@@ -282,5 +283,22 @@ void drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color, uint8_t siz
                 } 
             }
     }
+}
 
+/*
+draw a string with the first chat at (x, y)
+*/
+
+void drawString(unsigned char* str, int size, int16_t x, int16_t y, uint16_t color){
+    // testing if the x,y is out of bound and whether the size of word can fit in
+    if((x >= LCD_Width) || (y >= LCD_Height) || 
+        ((x + 6 * size - 1) < 0) ||((y + 8 * size - 1) < 0))
+    return;
+
+    for(int i = 0; i < size; i++){
+      if(str[i] == '\0'){
+        break;
+      }
+      drawChar(x+(i*6), y, str[i], color, 1);
+    }
 }
