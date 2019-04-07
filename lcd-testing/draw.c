@@ -411,3 +411,95 @@ void flood(uint16_t color, uint32_t len)
     LCD_CS_Negate;
 
 }
+
+
+
+void drawRect(int16_t x1, int16_t y1, int16_t w, int16_t h, uint16_t color)
+{
+   int16_t x2 = x1+w-1; 
+   int16_t y2 = y1+h-1;
+    if( (w<= 0) || (h<= 0)|| (x1> LCD_Width) ||  
+        (y1>= LCD_Height) || (x2<0) || (y2 <)) 
+        return;
+
+    if(x1 < 0) 
+    { // Clip left
+        w += x1;
+        x1 = 0;
+    }
+    if(y1 < 0) 
+    { // Clip top
+        h += y1;
+        y1 = 0;
+    }
+    if(x2 >= _width) { // Clip right
+        x2 = LCD_Width - 1;
+        w  = x2 - x1 + 1;
+    }
+    if(y2 >= _height) { // Clip bottom
+        y2 = LCD_Height - 1;
+        h  = y2 - y1 + 1;
+    }    
+
+    setAddrWindow(x1,y1,x2,y2);
+    flood(color, (uint32_t)w*(uint32_t)h);
+    LCD_CS_Negate;
+}
+
+void drawTri(int16_t x0, int16_t y0,int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color)
+{
+    
+   if (y0 > y1) {
+       swap(y0,y1);
+       swap(x0,x1);
+    }
+    if (y1 > y2) {
+        swap(y2, y1); 
+        swap(x2, x1);
+    }
+    if (y0 > y1) {
+        swap(y0, y1); 
+        swap(x0, x1);
+    }
+
+
+    int16_t dx01 = x1 - x0;
+    int16_t dy01 = y1 - y0;
+    int16_t dx02 = x2 - x0;
+    int16_t dy02 = y2 - y0;
+    int16_t dx12 = x2 - x1;
+    int16_t dy12 = y2 - y1;
+    int32_t sa   = 0;
+    int32_t sb   = 0;
+
+    int16_t a, b, last, y;
+    if(y1 == y2) 
+        last = y1;   
+    else         
+        last = y1-1; 
+
+    for(y=y0; y<=last; y++) {
+        a   = x0 + sa / dy01;
+        b   = x0 + sb / dy02;
+        sa += dx01;
+        sb += dx02;
+
+        if(a > b) swap(a,b);
+        drawHLine(a, y, b-a+1, color);
+    }
+
+    sa = dx12 * (y - y1);
+    sb = dx02 * (y - y0);
+    for(; y<=y2; y++) {
+        a   = x1 + sa / dy12;
+        b   = x0 + sb / dy02;
+        sa += dx12;
+        sb += dx02;
+        if(a > b) swap(a,b);
+        drawHLine(a, y, b-a+1, color);
+    }
+
+
+}
+
+
