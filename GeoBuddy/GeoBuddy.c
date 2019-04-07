@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "GeoBuddy.h"
+#include "draw.h"
 
 //sudo picocom --baud 9600 /dev/ttyUSB0
 
@@ -18,7 +19,6 @@ void update_user_position(){
 
 	char longitude_str[20];
 	char latitude_str[20];
-	char latitude_str1[20];
 	char output_buf[256];
 
 	//****************  output parsed GPS data  ******/	
@@ -152,7 +152,34 @@ void distance(double goal_lat, double goal_long){
 	memset(output_buf, 0, sizeof(output_buf));
 }
 
+void drawGPS(){
+	char output_buf[40];
+	if(fix == 0){
+		strcpy(output_buf, "Fix is 0");
+		drawString(output_buf, 8, 10, 10, color565(255, 255, 255));
+	}
+	else{
+		char longitude_str[20];
+	char latitude_str[20];
+	dtostrf(lat_comp_signed, 10, 7, latitude_str);	
+	dtostrf(long_comp_signed, 10, 7, longitude_str);
+		snprintf(output_buf, sizeof(output_buf), "Location: %s, %s", latitude_str, longitude_str);
+
+		//clear old info
+		draw_box(10, 10, LCD_Width-1, 20, color565(255,255,255));
+
+		drawString(output_buf, 40, 10, 10, color565(0, 0, 0));
+	}
+}
+
 int main(void){
+
+	//initialize the LCD
+	DDRB |= LCD_Data_B;         // Set PORTB bits 0-1 for output
+    DDRD |= LCD_Data_D;         // Set PORTD bits 2-7 for output
+    PORTC |= LCD_Ctrl_B;        // Set all the control lines high
+    DDRC |= LCD_Ctrl_B;         // Set control port bits for output
+    initialize();               // Initialize the LCD display
 	
 	// Initialize the serial and gps interface
 	serial_init();
@@ -164,13 +191,20 @@ int main(void){
 	double dummy_lat = 34.020506;
 	double dummy_long = -118.289114;
 
+	//draw white background
+	draw_box(0, 0, LCD_Width-1, LCD_Height-1, color565(255,255,255));
+
+
 	while(1){
 
 		_delay_ms(1);
+		//drawGPS();
+		//_delay_ms(300);
 			
 		//update user position
 		gps_iteration_count++;
 		gps_read();
+
 		//only parse and update if the data is new
 		if(gps_newNMEAreceived() == true){
 			gps_parse(gps_lastNMEA()); 
@@ -179,7 +213,12 @@ int main(void){
 			update_user_position(); 
 			distance(dummy_lat, dummy_long);
 			gps_iteration_count = 0;
+			
+			drawGPS();
+			_delay_ms(100);
 		}
 		//end of user position update
+
+		
 	}
 }
