@@ -31,6 +31,9 @@ void drawString(unsigned char* str, int size, int16_t x, int16_t y, uint16_t col
 void flood(uint16_t color, uint32_t len);
 void drawVLine(int16_t x, int16_t y, int16_t length,uint16_t color);
 void drawHLine(int16_t x, int16_t y, int16_t length, uint16_t color);
+void drawRect(int16_t x1, int16_t y1, int16_t w, int16_t h, uint16_t color);
+void drawTri(int16_t x0, int16_t y0,int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
+void swap (int16_t x1, int16_t x2);
  
 void color_bars();
 void boxes();
