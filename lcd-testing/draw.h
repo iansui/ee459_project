@@ -33,7 +33,6 @@ void drawVLine(int16_t x, int16_t y, int16_t length,uint16_t color);
 void drawHLine(int16_t x, int16_t y, int16_t length, uint16_t color);
 void drawRect(int16_t x1, int16_t y1, int16_t w, int16_t h, uint16_t color);
 void drawTri(int16_t x0, int16_t y0,int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
-#define swap(a, b) { int16_t t = a; a = b; b = t; }
 
  
 void color_bars();
