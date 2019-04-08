@@ -22,7 +22,6 @@ volatile uint8_t lineidx=0;
 volatile char *currentline;
 volatile char *lastline;
 volatile bool recvdflag;
-volatile bool inStandbyMode;
 
 bool gps_parse(char *nmea) {
   // do checksum check
