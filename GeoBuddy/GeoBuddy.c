@@ -1,6 +1,5 @@
 //sudo picocom --baud 9600 /dev/ttyUSB0
 
-
 /*Inclusions*/
 #include <stdio.h>
 #include <stdbool.h>
@@ -13,7 +12,7 @@
 #include <avr/interrupt.h>
 #include <avr/eeprom.h>
 
-#include "Adafruit_GPS_project.h"
+#include "gps.h"
 #include "serial.h"
 #include "GeoBuddy.h"
 #include "draw.h"
@@ -143,7 +142,7 @@ void drawGPS(){
 	//if fix is 0, don't print any data yet
 	if(fix == 0){
 		strcpy(output_buf, "Fetching GPS DATA.....");
-		drawString(output_buf, 50, 10, 10, color565(255, 255, 255));
+		drawString(output_buf, 50, 10, 10, text_color);
 	}
 	else{
 		//print goal location

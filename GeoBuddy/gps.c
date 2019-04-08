@@ -6,7 +6,8 @@
 #include <stdbool.h>
 #include <stdarg.h>
 #include <util/delay.h>
-#include "Adafruit_GPS_project.h"
+
+#include "gps.h"
 #include "serial.h"
 
 // how long are max NMEA lines to parse?

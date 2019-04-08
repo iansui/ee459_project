@@ -1,5 +1,5 @@
-//#ifndef _ADAFRUIT_GPS_project_H
-//#define _ADAFRUIT_GPS_project_H
+#ifndef GPS_H
+#define GPS_H
 
 //comment this out if you don't want to include software serial in the library
 //#define USE_SW_SERIAL
@@ -123,3 +123,6 @@ uint8_t LOCUS_type, LOCUS_mode, LOCUS_config, LOCUS_interval, LOCUS_distance, LO
 bool paused;
   
 uint8_t parseResponse(char *response);
+
+
+#endif
