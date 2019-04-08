@@ -23,11 +23,7 @@
 #define _swap_int16_t(a, b) { int16_t t = a; a = b; b = t; }
 #endif
 
-
 GFXfont  *gfxFont;
-
-void drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color, uint8_t size);
-void drawString(char* str, int size, int16_t x, int16_t y, uint16_t color);
 
 void color_bars();
 void boxes();
@@ -40,19 +36,16 @@ void lcdout(uint8_t);
 void lcd_init(void);
 void reset();
 uint16_t color565(uint8_t, uint8_t, uint8_t);
+
 void drawPixel(int16_t x, int16_t y, uint16_t color);
+void drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color, uint8_t size);
+void drawString(char* str, int size, int16_t x, int16_t y, uint16_t color);
 
 void writeLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color);
 void drawFastVLine(int16_t x, int16_t y,int16_t h, uint16_t color);
 void writeFastVLine(int16_t x, int16_t y,int16_t h, uint16_t color);
 void fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
 void fillScreen(uint16_t color);
-
-
-
-
-
-
 
 /*
   This LCD is set up as a 240 pixel wide (x) by 320 pixel high (y)
@@ -135,7 +128,5 @@ void fillScreen(uint16_t color);
 #define ILI9341_MADCTL_RGB      0x00
 #define ILI9341_MADCTL_BGR      0x08
 #define ILI9341_MADCTL_MH       0x04
-
-
 
 #endif
