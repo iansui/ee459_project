@@ -180,7 +180,7 @@ void lcdout(uint8_t x)
 /*
   initialize - Do various things to initialize the LCD.
 */
-void initialize()
+void lcd_init()
 {
     reset();
 
@@ -285,7 +285,7 @@ void drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color, uint8_t siz
 draw a string with the first chat at (x, y)
 */
 
-void drawString(unsigned char* str, int size, int16_t x, int16_t y, uint16_t color){
+void drawString(char* str, int size, int16_t x, int16_t y, uint16_t color){
     // testing if the x,y is out of bound and whether the size of word can fit in
     if((x >= LCD_Width) || (y >= LCD_Height) || 
         ((x + 6 * size - 1) < 0) ||((y + 8 * size - 1) < 0))

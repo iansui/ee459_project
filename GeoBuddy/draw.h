@@ -27,7 +27,7 @@
 GFXfont  *gfxFont;
 
 void drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color, uint8_t size);
-void drawString(unsigned char* str, int size, int16_t x, int16_t y, uint16_t color);
+void drawString(char* str, int size, int16_t x, int16_t y, uint16_t color);
 
 void color_bars();
 void boxes();
@@ -37,7 +37,7 @@ void regout32(uint8_t, uint32_t);
 void regout16(uint16_t, uint16_t);
 void regout8(uint8_t, uint8_t);
 void lcdout(uint8_t);
-void initialize(void);
+void lcd_init(void);
 void reset();
 uint16_t color565(uint8_t, uint8_t, uint8_t);
 void drawPixel(int16_t x, int16_t y, uint16_t color);
