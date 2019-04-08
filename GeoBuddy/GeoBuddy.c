@@ -185,7 +185,10 @@ int main(void){
 
 		//only parse and update if the data is new
 		if(gps_newNMEAreceived() == true){
-			gps_parse(gps_lastNMEA()); 
+			bool parse_result = gps_parse(gps_lastNMEA()); 
+			if(!parse_result){
+				continue;
+			}
 		}
 		if(gps_iteration_count > 300){
 			update_user_location(); 

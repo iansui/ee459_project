@@ -57,7 +57,6 @@ bool gps_parse(char *nmea) {
     hour = time / 10000;
     minute = (time % 10000) / 100;
     seconds = (time % 100);
-
     milliseconds = fmod(timef, 1.0) * 1000;
 
     // parse out latitude
@@ -73,21 +72,21 @@ bool gps_parse(char *nmea) {
       strncpy(degreebuff + 2, p, 4);
       degreebuff[6] = '\0';
       minutes = (50 * atol(degreebuff) / 3);
-      latitude_fixed = (degree + minutes);
+      // latitude_fixed = (degree + minutes);
 
       lat_comp = (degree / 10000000)+(minutes * 0.000006F / 60);
 
 
-      latitude = (degree / 100000 + minutes * 0.000006F);
-      latitude_decimal = (degree / 10000000) + minutes * 0.0000001F;
-      latitudeDegrees = ((latitude-100*(int)(latitude/100))/60.0);
-      latitudeDegrees += (int)(latitude/100);
+      // latitude = (degree / 100000 + minutes * 0.000006F);
+      // latitude_decimal = (degree / 10000000) + minutes * 0.0000001F;
+      // latitudeDegrees = ((latitude-100*(int)(latitude/100))/60.0);
+      // latitudeDegrees += (int)(latitude/100);
     }
     
     p = strchr(p, ',')+1;
     if (',' != *p)
     {
-      if (p[0] == 'S') latitudeDegrees *= -1.0;
+      // if (p[0] == 'S') latitudeDegrees *= -1.0;
       if (p[0] == 'N') lat = 'N';
       else if (p[0] == 'S') lat = 'S';
       else if (p[0] == ',') lat = 0;
@@ -107,20 +106,20 @@ bool gps_parse(char *nmea) {
       strncpy(degreebuff + 2, p, 4);
       degreebuff[6] = '\0';
       minutes = 50 * atol(degreebuff) / 3;
-      longitude_fixed = degree + minutes;
+      // longitude_fixed = degree + minutes;
 
       long_comp = (degree / 10000000)+(minutes * 0.000006F / 60);
 
-      longitude = degree / 100000 + minutes * 0.000006F;
-      longitude_decimal = (degree / 10000000) + minutes * 0.0000001F;
-      longitudeDegrees = (longitude-100*(int)(longitude/100))/60.0;
-      longitudeDegrees += (int)(longitude/100);
+      // longitude = degree / 100000 + minutes * 0.000006F;
+      // longitude_decimal = (degree / 10000000) + minutes * 0.0000001F;
+      // longitudeDegrees = (longitude-100*(int)(longitude/100))/60.0;
+      // longitudeDegrees += (int)(longitude/100);
     }
     
     p = strchr(p, ',')+1;
     if (',' != *p)
     {
-      if (p[0] == 'W') longitudeDegrees *= -1.0;
+      // if (p[0] == 'W') longitudeDegrees *= -1.0;
       if (p[0] == 'W') lon = 'W';
       else if (p[0] == 'E') lon = 'E';
       else if (p[0] == ',') lon = 0;
@@ -140,23 +139,23 @@ bool gps_parse(char *nmea) {
     }
     
     p = strchr(p, ',')+1;
-    if (',' != *p)
-    {
-      HDOP = atof(p);
-    }
+    // if (',' != *p)
+    // {
+    //   HDOP = atof(p);
+    // }
     
     p = strchr(p, ',')+1;
-    if (',' != *p)
-    {
-      altitude = atof(p);
-    }
+    // if (',' != *p)
+    // {
+    //   altitude = atof(p);
+    // }
     
     p = strchr(p, ',')+1;
     p = strchr(p, ',')+1;
-    if (',' != *p)
-    {
-      geoidheight = atof(p);
-    }
+    // if (',' != *p)
+    // {
+    //   geoidheight = atof(p);
+    // }
     return true;
   }
   if (strstr(nmea, "$GPRMC")) {
@@ -170,7 +169,6 @@ bool gps_parse(char *nmea) {
     hour = time / 10000;
     minute = (time % 10000) / 100;
     seconds = (time % 100);
-
     milliseconds = fmod(timef, 1.0) * 1000;
 
     p = strchr(p, ',')+1;
@@ -195,20 +193,20 @@ bool gps_parse(char *nmea) {
       strncpy(degreebuff + 2, p, 4);
       degreebuff[6] = '\0';
       long minutes = 50 * atol(degreebuff) / 3;
-      latitude_fixed = degree + minutes;
+      // latitude_fixed = degree + minutes;
 
       lat_comp = (degree / 10000000)+(minutes * 0.000006F / 60);
 
-      latitude = degree / 100000 + minutes * 0.000006F;
-      latitude_decimal = (degree / 10000000) + minutes * 0.0000001F;
-      latitudeDegrees = (latitude-100*(int)(latitude/100))/60.0;
-      latitudeDegrees += (int)(latitude/100);
+      // latitude = degree / 100000 + minutes * 0.000006F;
+      // latitude_decimal = (degree / 10000000) + minutes * 0.0000001F;
+      // latitudeDegrees = (latitude-100*(int)(latitude/100))/60.0;
+      // latitudeDegrees += (int)(latitude/100);
     }
     
     p = strchr(p, ',')+1;
     if (',' != *p)
     {
-      if (p[0] == 'S') latitudeDegrees *= -1.0;
+      // if (p[0] == 'S') latitudeDegrees *= -1.0;
       if (p[0] == 'N') lat = 'N';
       else if (p[0] == 'S') lat = 'S';
       else if (p[0] == ',') lat = 0;
@@ -228,21 +226,21 @@ bool gps_parse(char *nmea) {
       strncpy(degreebuff + 2, p, 4);
       degreebuff[6] = '\0';
       minutes = 50 * atol(degreebuff) / 3;
-      longitude_fixed = degree + minutes;
+      // longitude_fixed = degree + minutes;
 
       long_comp = (degree / 10000000)+(minutes * 0.000006F / 60);
 
 
-      longitude = degree / 100000 + minutes * 0.000006F;
-      longitude_decimal = (degree / 10000000) + minutes * 0.0000001F;
-      longitudeDegrees = (longitude-100*(int)(longitude/100))/60.0;
-      longitudeDegrees += (int)(longitude/100);
+      // longitude = degree / 100000 + minutes * 0.000006F;
+      // longitude_decimal = (degree / 10000000) + minutes * 0.0000001F;
+      // longitudeDegrees = (longitude-100*(int)(longitude/100))/60.0;
+      // longitudeDegrees += (int)(longitude/100);
     }
     
     p = strchr(p, ',')+1;
     if (',' != *p)
     {
-      if (p[0] == 'W') longitudeDegrees *= -1.0;
+      // if (p[0] == 'W') longitudeDegrees *= -1.0;
       if (p[0] == 'W') lon = 'W';
       else if (p[0] == 'E') lon = 'E';
       else if (p[0] == ',') lon = 0;
@@ -250,17 +248,17 @@ bool gps_parse(char *nmea) {
     }
     // speed
     p = strchr(p, ',')+1;
-    if (',' != *p)
-    {
-      speed = atof(p);
-    }
+    // if (',' != *p)
+    // {
+    //   speed = atof(p);
+    // }
     
     // angle
     p = strchr(p, ',')+1;
-    if (',' != *p)
-    {
-      angle = atof(p);
-    }
+    // if (',' != *p)
+    // {
+    //   angle = atof(p);
+    // }
     
     p = strchr(p, ',')+1;
     if (',' != *p)
@@ -315,20 +313,25 @@ void gps_common_init(void) {
 
   hour = minute = seconds = year = month = day =
     fixquality = satellites = 0; // uint8_t
-  lat = lon = mag = 0; // char
+  lat = lon = 0;
+  // = mag = 0; // char
   fix = false; // boolean
   milliseconds = 0; // uint16_t
-  latitude = longitude = geoidheight = altitude =
-    speed = angle = magvariation = HDOP = 0.0; // float
+  //latitude = longitude = 
+  // geoidheight = altitude =
+  // speed = angle = magvariation = HDOP = 0.0; // float
 }
 
 bool gps_newNMEAreceived(void) {
   return recvdflag;
 }
 
+
+/*
 void gps_pause(bool p) {
   paused = p;
 }
+*/
 
 char *gps_lastNMEA(void) {
   recvdflag = false;
