@@ -1,4 +1,4 @@
-#include "draw.h"
+#include "lcd.h"
 
 uint8_t red[8] = { 0, 0xff, 0, 0, 0xff, 0, 0xff, 0xff };
 uint8_t grn[8] = { 0, 0, 0xff, 0, 0xff, 0xff, 0, 0xff };

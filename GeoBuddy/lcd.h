@@ -1,5 +1,5 @@
-#ifndef DRAW_H
-#define DRAW_H
+#ifndef LCD_H
+#define LCD_H
 
 #include <avr/io.h>
 #include <util/delay.h>

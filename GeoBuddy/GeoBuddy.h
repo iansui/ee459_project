@@ -1,23 +1,29 @@
-#ifndef _GEOBUDDY_H
-#define _GEOBUDDY_H
+#ifndef GEOBUDDY_H
+#define GEOBUDDY_H
 	
 void update_user_position();
-void distance(double goal_lat, double goal_long);
-uint16_t curr_direction;
-char curr_direction_str[3];
+void update_distance(double goal_lat, double goal_long);
 
+char serial_output_buf[256];
+char lcd_output_buf[50];
 
-//goal is set to the rough location of the lab room
 double goal_lat = 34.020506;
 double goal_long = -118.289114;
+char goal_lat_str[20];
+char goal_long_str[20];
 
-//curr is the signed current location
 double curr_lat;
 double curr_long;
+char curr_lat_str[20];
+char curr_long_str[20];
 
 int curr_distance;
-char curr_direction_str[3];
+char curr_distance_str[20];
+
 double brng;
+char brng_str[20];
+uint16_t curr_direction;
+char curr_direction_str[3];
 
 uint16_t background_color;
 uint16_t text_color;

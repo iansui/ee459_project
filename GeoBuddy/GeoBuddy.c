@@ -14,8 +14,8 @@
 
 #include "gps.h"
 #include "serial.h"
+#include "lcd.h"
 #include "GeoBuddy.h"
-#include "draw.h"
 
 void update_user_location(){
 
@@ -30,28 +30,25 @@ void update_user_location(){
     }
 
 	//output gps data through serial connection
-	char longitude_str[20];
-	char latitude_str[20];
-	char output_buf[256];
-	dtostrf(curr_lat, 10, 7, latitude_str);
-	dtostrf(curr_long, 10, 7, longitude_str);
+	dtostrf(curr_lat, 10, 7, curr_lat_str);
+	dtostrf(curr_long, 10, 7, curr_long_str);
 
 	if(fix == 0){
-		snprintf(output_buf, sizeof(output_buf), "DateTime: %u-%u-%u %u:%u:%u \r\n"
+		snprintf(serial_output_buf, sizeof(serial_output_buf), "DateTime: %u-%u-%u %u:%u:%u \r\n"
 					"Fix: %d, Fix quality: %u, Num Satellites: %u\r\n",
 					year, month, day, hour, minute, seconds, 
 					fix, fixquality, satellites);
 	}
 	else{
-		snprintf(output_buf, sizeof(output_buf), "DateTime: %u-%u-%u %u:%u:%u \r\n"
+		snprintf(serial_output_buf, sizeof(serial_output_buf), "DateTime: %u-%u-%u %u:%u:%u \r\n"
 					"Location: %c %s, %c %s\r\n"
 					"Fix: %d, Fix quality: %u, Num Satellites: %u\r\n",
 					year, month, day, hour, minute, seconds, 
-					lat, latitude_str,  lon, longitude_str,
+					lat, curr_lat_str, lon, curr_long_str,
 					fix, fixquality, satellites);
 	}
-	serial_string_out(output_buf);
-	memset(output_buf, 0, sizeof(output_buf));
+	serial_string_out(serial_output_buf);
+	memset(serial_output_buf, 0, sizeof(serial_output_buf));
 }
 
 void update_distance(double goal_lat, double goal_long){
@@ -72,12 +69,13 @@ void update_distance(double goal_lat, double goal_long){
 	double a = sin(lat_diff/2) * sin(lat_diff/2) + cos(curr_lat_rad) * cos(goal_lat_rad) * sin(long_diff/2) * sin(long_diff/2);
 	double c = 2 * atan2(sqrt(a), sqrt(1-a));
 	curr_distance = (int)(R * c * 3.28084);
+	dtostrf(curr_distance, 12, 7, curr_distance_str);			
 
 	//calculate current direction of the goal location
 	double x = sin(goal_long_rad - curr_long_rad)* cos(goal_lat_rad);
 	double y = cos(curr_lat_rad)*sin(goal_lat_rad) - sin(curr_lat_rad)*cos(goal_lat_rad)*cos(goal_long_rad-curr_long_rad);
 	brng = (atan2(y, x) * 180 /M_PI);
-
+	dtostrf(brng, 10, 7, brng_str);
 	
 	if(brng > -22.5 && brng <= 22.5){
 		curr_direction = 0;
@@ -113,65 +111,45 @@ void update_distance(double goal_lat, double goal_long){
 	}
 
 	//output current distance and direction data through serial connection
-	char distance_str[20];
-	char goal_lat_str[20];
-	char goal_long_str[20];
-	char longitude_str[20];
-	char latitude_str[20];
-	char brng_str[20];
-	dtostrf(curr_lat, 10, 7, latitude_str);	
-	dtostrf(curr_long, 10, 7, longitude_str);
-	dtostrf(goal_lat, 10, 7, goal_lat_str);	
-	dtostrf(goal_long, 10, 7, goal_long_str);
-	dtostrf(brng, 10, 7, brng_str);
-	char output_buf[256];
-	dtostrf(curr_distance, 12, 7, distance_str);			
-	snprintf(output_buf, sizeof(output_buf),
+	snprintf(serial_output_buf, sizeof(serial_output_buf),
 	 "Goal loc: %s, %s\r\n"
 	 "Current: %s, %s\r\n"
 	 "Direction: %s %s\r\n"
 	 "Distance: %s feet\r\n"
-	 , goal_lat_str, goal_long_str, latitude_str, longitude_str, curr_direction_str, brng_str, distance_str);
-	serial_string_out(output_buf);
-	memset(output_buf, 0, sizeof(output_buf));
+	 , goal_lat_str, goal_long_str, curr_lat_str, curr_long_str, curr_direction_str, brng_str, curr_distance_str);
+	serial_string_out(serial_output_buf);
+	memset(serial_output_buf, 0, sizeof(serial_output_buf));
 }
 
 void drawGPS(){
-	char output_buf[50];
-
 	//if fix is 0, don't print any data yet
 	if(fix == 0){
-		strcpy(output_buf, "Fetching GPS DATA.....");
-		drawString(output_buf, 50, 10, 10, text_color);
+		strcpy(lcd_output_buf, "Fetching GPS DATA.....");
+		drawString(lcd_output_buf, 50, 10, 10, text_color);
 	}
 	else{
-		//print goal location
-		char goal_lat_str[20];
-		char goal_long_str[20];
-		dtostrf(goal_lat, 10, 7, goal_lat_str);	
-		dtostrf(goal_long, 10, 7, goal_long_str);
-		snprintf(output_buf, sizeof(output_buf), "Goal: %s, %s", goal_lat_str, goal_long_str);
+		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Goal: %s, %s", goal_lat_str, goal_long_str);
 		draw_box(10, 10, LCD_Width-1, 20, background_color);
-		drawString(output_buf, 50, 10, 10, text_color);
+		drawString(lcd_output_buf, 50, 10, 10, text_color);
 		_delay_ms(50);
+		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
+
 
 		//print current location
-		char curr_long_str[20];
-		char curr_lat_str[20];
-		dtostrf(curr_lat, 10, 7, curr_long_str);	
-		dtostrf(curr_long, 10, 7, curr_long_str);
-		snprintf(output_buf, sizeof(output_buf), "Current: %s, %s", curr_lat_str, curr_long_str);
+		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Current: %s, %s", curr_lat_str, curr_long_str);
 		draw_box(30, 10, LCD_Width-1, 20, background_color);
-		drawString(output_buf, 50, 30, 10, text_color);
+		drawString(lcd_output_buf, 50, 30, 10, text_color);
 		_delay_ms(50);
+		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
+
 
 		//print distance
-		char curr_distance_str[20];
-		dtostrf(curr_distance, 12, 7, curr_distance_str);
-		snprintf(output_buf, sizeof(output_buf), "Distance: %s %s feet", curr_direction_str,  curr_distance_str);
+		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Distance: %s %s feet", curr_direction_str,  curr_distance_str);
 		draw_box(70, 10, LCD_Width-1, 20, background_color);
-		drawString(output_buf, 50, 70, 10, text_color);
+		drawString(lcd_output_buf, 50, 70, 10, text_color);
 		_delay_ms(50);
+		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
+
 	}
 }
 
