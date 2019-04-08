@@ -78,7 +78,7 @@ void update_distance(double goal_lat, double goal_long){
 	double y = cos(curr_lat_rad)*sin(goal_lat_rad) - sin(curr_lat_rad)*cos(goal_lat_rad)*cos(goal_long_rad-curr_long_rad);
 	brng = (atan2(y, x) * 180 /M_PI);
 
-	char goal_direction_str[3];
+	
 	if(brng > -22.5 && brng <= 22.5){
 		curr_direction = 0;
 		strcpy(curr_direction_str, " E");
@@ -131,7 +131,7 @@ void update_distance(double goal_lat, double goal_long){
 	 "Current: %s, %s\r\n"
 	 "Direction: %s %s\r\n"
 	 "Distance: %s feet\r\n"
-	 , goal_lat_str, goal_long_str, latitude_str, longitude_str, goal_direction_str, brng_str, distance_str);
+	 , goal_lat_str, goal_long_str, latitude_str, longitude_str, curr_direction_str, brng_str, distance_str);
 	serial_string_out(output_buf);
 	memset(output_buf, 0, sizeof(output_buf));
 }
@@ -153,6 +153,7 @@ void drawGPS(){
 		snprintf(output_buf, sizeof(output_buf), "Goal: %s, %s", goal_lat_str, goal_long_str);
 		draw_box(10, 10, LCD_Width-1, 20, background_color);
 		drawString(output_buf, 50, 10, 10, text_color);
+		_delay_ms(50);
 
 		//print current location
 		char curr_long_str[20];
@@ -162,6 +163,15 @@ void drawGPS(){
 		snprintf(output_buf, sizeof(output_buf), "Current: %s, %s", curr_lat_str, curr_long_str);
 		draw_box(30, 10, LCD_Width-1, 20, background_color);
 		drawString(output_buf, 50, 30, 10, text_color);
+		_delay_ms(50);
+
+		//print distance
+		char curr_distance_str[20];
+		dtostrf(curr_distance, 12, 7, curr_distance_str);
+		snprintf(output_buf, sizeof(output_buf), "Distance: %s %s feet", curr_direction_str,  curr_distance_str);
+		draw_box(70, 10, LCD_Width-1, 20, background_color);
+		drawString(output_buf, 50, 70, 10, text_color);
+		_delay_ms(50);
 	}
 }
 

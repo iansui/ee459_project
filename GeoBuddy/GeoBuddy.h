@@ -16,6 +16,7 @@ double curr_lat;
 double curr_long;
 
 int curr_distance;
+char curr_direction_str[3];
 double brng;
 
 uint16_t background_color;
