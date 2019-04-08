@@ -24,4 +24,4 @@ https://github.com/adafruit/TFTLCD-Library
 
 Adafruit_touchscreen
 
-Still working on this
+https://github.com/adafruit/Adafruit_FT6206_Library
