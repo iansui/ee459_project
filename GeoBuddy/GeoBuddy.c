@@ -131,33 +131,34 @@ void drawGPS(){
 		drawString(lcd_output_buf, 50, 10, 10, text_color);
 	}
 	else{
+		//show the name of the goal location
 		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "%s", goal_title);
 		draw_box(10, 10, LCD_Width-20, 20, background_color);
 		drawString(lcd_output_buf, 50, 10, 10, text_color);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
+		//show the coordinates of the goal location
 		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Goal:     %s, %s", goal_lat_str, goal_long_str);
 		draw_box(10, 30, LCD_Width-20, 40, background_color);
 		drawString(lcd_output_buf, 50, 10, 30, text_color);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
-		//print current location
+		//show the coordinates of the current location
 		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Current:  %s, %s", curr_lat_str, curr_long_str);
 		draw_box(10, 50, LCD_Width-20, 60, background_color);
 		drawString(lcd_output_buf, 50, 10, 50, text_color);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
-		//print distance
+		//show the distance between current and goal
 		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Distance: %s %s feet", curr_direction_str,  curr_distance_str);
 		draw_box(10, 70, LCD_Width-20, 80, background_color);
 		drawString(lcd_output_buf, 50, 10, 70, text_color);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
-	}
-}
 
-void drawArrow(){
-	if(fix == 0){
-		return;
+		//draw direction arrow
+		draw_box(70, 100, 170, 200, background_color);
+
+
 	}
 }
 
