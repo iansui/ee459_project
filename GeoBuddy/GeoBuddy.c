@@ -125,6 +125,13 @@ void update_distance(double goal_lat, double goal_long){
 }
 
 void drawGPS(){
+
+		// drawLine(90, 100, 180, 200, background_color);
+		// drawVLine(90, 100, 100, color565(255, 255, 255));
+		// drawHLine(90, 100, 100, color565(255, 0, 0))
+		draw_box(90, 100, 150, 120, background_color);
+		drawTriangle(150, 90, 150, 130, 170, 110, color565(255,0,0));
+
 	//if fix is 0, don't print any data yet
 	if(fix == 0){
 		strcpy(lcd_output_buf, "Fetching GPS DATA.....");

@@ -44,7 +44,7 @@ void color_bars()
 
 /*
   boxes - Draws some boxes on the screen with different fill colors
-*/
+
 void boxes()
 {
     draw_box(0, 0, LCD_Width-1, LCD_Height-1, color565(255,255,255));
@@ -56,6 +56,7 @@ void boxes()
     draw_box(10, 260, 130, 300, color565(240, 30, 250));
     draw_box(100, 100, 140, 140, color565(255, 0, 255));
 }
+*/
 
 /*
   draw_box - Draw a box from (x1,y1), the upper left, to (x2,y2), the lower right
@@ -300,7 +301,11 @@ void drawString(char* str, int size, int16_t x, int16_t y, uint16_t color){
 }
 
 
-void writeLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color) {
+/*
+    draw a line from (x0, y0) to (x1, y1)
+*/
+
+void drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color) {
     int16_t steep = abs(y1 - y0) > abs(x1 - x0);
     if (steep) {
         _swap_int16_t(x0, y0);
@@ -340,23 +345,192 @@ void writeLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color) {
 }
 
 
-void drawFastVLine(int16_t x, int16_t y,int16_t h, uint16_t color) {
-    writeLine(x, y, x, y+h-1, color);
+/*
+draw a vertical line from starting point(x,y)
+*/
+void drawVLine(int16_t x, int16_t y,int16_t length, uint16_t color) {
+    drawLine(x, y, x, y+length-1, color);
 }
 
-void writeFastVLine(int16_t x, int16_t y,int16_t h, uint16_t color) {
-    // Overwrite in subclasses if startWrite is defined!
-    // Can be just writeLine(x, y, x, y+h-1, color);
-    // or writeFillRect(x, y, 1, h, color);
-    drawFastVLine(x, y, h, color);
+
+/*
+draw a vertical line from starting point(x,y)
+*/
+void drawHLine(int16_t x, int16_t y,int16_t length, uint16_t color) {
+    drawLine(x, y, x+length-1, y, color);
 }
 
-void fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color) {
-    for (int16_t i=x; i<x+w; i++) {
-        writeFastVLine(i, y, h, color);
+// void drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, int uint16_t color){
+//     drawLine(x, y, x1, y1, color);
+//     drawLine(x, y, x2, y2, color);
+//     drawLine(x1, y1, x2, y2, color);
+// }
+
+
+/*
+
+
+void drawHLine(int16_t x, int16_t y, int16_t length, uint16_t color)
+{
+    int16_t x_length = x+length-1;
+
+    if((length <= 0) ||  (y < 0) || ( y>=LCD_Height) 
+    ||(x>= LCD_Width) || ((x+length-1) <0)) 
+        return;
+
+    if (x_length >= LCD_Width)
+    {
+        x_length = LCD_Width-1;
+        length = x_length -x+1;
     }
+    setAddrWindow(x,y,x2,y);
+    flood(color,length);
+    LCD_CS_Negate;
 }
 
-void fillScreen(uint16_t color) {
-  fillRect(0, 0, LCD_Width, LCD_Height, color);
+void drawVLine(int16_t x, int16_t y, int16_t length,uint16_t color)
+{
+    int16_t y_length = y+length-1;
+
+    if((length <= 0) ||  (y < 0) || ( y>=LCD_Height) 
+    ||(x>= LCD_Width) || ((y+length-1) <0)) 
+        return;
+
+    if (y_length >= LCD_Height)
+    {
+        y_length = LCD_Height-1;
+        length = y_length -x+1;
+    }
+    setAddrWindow(x,y,x,y2);
+    flood(color,length);
+    LCD_CS_Negate;
+}
+
+
+// Block Fill
+void flood(uint16_t color, uint32_t len)
+{
+    uint8_t i;
+    LCD_CS_Active;
+    LCD_CD_Command;
+    lcdout(0x2c);
+
+    // Write the 1st pixel
+    LCD_CD_Data;
+    lcdout(color >> 8); 
+    lcdout(color);
+    length = length-1;
+    uint16_t blocks = (uint16_t)(length/64);
+    if (color == (color <<8))
+    {
+        while(blocks--)
+        {
+            i = 16;
+            do
+            {
+                LCD_WR_Active;           LCD_WR_Negate;
+                LCD_WR_Active;           LCD_WR_Negate;
+                LCD_WR_Active;           LCD_WR_Negate;
+                LCD_WR_Active;           LCD_WR_Negate;
+                LCD_WR_Active;           LCD_WR_Negate;
+                LCD_WR_Active;           LCD_WR_Negate;
+                LCD_WR_Active;           LCD_WR_Negate;
+                LCD_WR_Active;           LCD_WR_Negate;
+                LCD_WR_Active;           LCD_WR_Negate;
+
+            }while(--i);
+        }
+        
+        for(i = (uint8_t)length & 63;i>=0;i--)
+        {
+            LCD_WR_Active;           LCD_WR_Negate;
+            LCD_WR_Active;           LCD_WR_Negate;
+        }
+
+    }
+    else
+    {
+        while(blocks--)
+        {
+            i = 16
+            do
+            {
+                lcdout(color >> 8);     lcdout(color);
+                lcdout(color >> 8);     lcdout(color);
+                lcdout(color >> 8);     lcdout(color);
+                lcdout(color >> 8);     lcdout(color);
+                lcdout(color >> 8);     lcdout(color);
+                lcdout(color >> 8);     lcdout(color);
+                lcdout(color >> 8);     lcdout(color);
+                lcdout(color >> 8);     lcdout(color);
+
+            }while(--i);
+        }
+        for(i = (uint8_t)length & 63;i>=0;i--)
+        {
+            lcdout(color >> 8);     lcdout(color);
+        }
+
+    }
+
+    LCD_CS_Negate;
+
+}
+
+*/
+
+void drawTriangle(int16_t x0, int16_t y0,int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color)
+{
+    
+   if (y0 > y1) {
+       _swap_int16_t(y0,y1);
+       _swap_int16_t(x0,x1);
+    }
+    if (y1 > y2) {
+        _swap_int16_t(y2, y1); 
+        _swap_int16_t(x2, x1);
+    }
+    if (y0 > y1) {
+        _swap_int16_t(y0, y1); 
+        _swap_int16_t(x0, x1);
+    }
+
+
+    int16_t dx01 = x1 - x0;
+    int16_t dy01 = y1 - y0;
+    int16_t dx02 = x2 - x0;
+    int16_t dy02 = y2 - y0;
+    int16_t dx12 = x2 - x1;
+    int16_t dy12 = y2 - y1;
+    int32_t sa   = 0;
+    int32_t sb   = 0;
+
+    int16_t a, b, last, y;
+    if(y1 == y2) 
+        last = y1;   
+    else         
+        last = y1-1; 
+
+    for(y=y0; y<=last; y++) {
+        a   = x0 + sa / dy01;
+        b   = x0 + sb / dy02;
+        sa += dx01;
+        sb += dx02;
+
+        if(a > b) _swap_int16_t(a,b);
+        drawHLine(a, y, b-a+1, color);
+    }
+
+    sa = dx12 * (y - y1);
+    sb = dx02 * (y - y0);
+    for(; y<=y2; y++) {
+        a   = x1 + sa / dy12;
+        b   = x0 + sb / dy02;
+        sa += dx12;
+        sb += dx02;
+        if(a > b) _swap_int16_t(a,b);
+        drawHLine(a, y, b-a+1, color);
+    }
+
+
 }

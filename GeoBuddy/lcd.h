@@ -41,11 +41,23 @@ void drawPixel(int16_t x, int16_t y, uint16_t color);
 void drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color, uint8_t size);
 void drawString(char* str, int size, int16_t x, int16_t y, uint16_t color);
 
-void writeLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color);
+
+void drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color);
+void drawHLine(int16_t x, int16_t y, int16_t length, uint16_t color);
+void drawVLine(int16_t x, int16_t y, int16_t length,uint16_t color);
+void drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
+
+
+/*
+void flood(uint16_t color, uint32_t len);
+void drawTri(int16_t x0, int16_t y0,int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
+
+
 void drawFastVLine(int16_t x, int16_t y,int16_t h, uint16_t color);
 void writeFastVLine(int16_t x, int16_t y,int16_t h, uint16_t color);
 void fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
 void fillScreen(uint16_t color);
+*/
 
 /*
   This LCD is set up as a 240 pixel wide (x) by 320 pixel high (y)
