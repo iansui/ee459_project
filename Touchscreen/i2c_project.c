@@ -150,12 +150,16 @@ bool touchscreen_begin(uint8_t thresh) {
   //Write with 1-byte address and change threshhold to be higher/lower
   //Wire.write((byte)reg);
   //Wire.write((byte)val);
-  i2c_io(FT62XX_ADDR,FT62XX_REG_THRESHHOLD,1,&thresh,1,NULL,0);  
- 
-  if (i2c_io(FT62XX_ADDR,NULL,0,NULL,0,FT62XX_REG_VENDID,1) != FT62XX_VENDID) {
+  uint8_t i2cinit_1[2] = FT62XX_REG_THRESHHOLD;
+  unit8_t i2cinit_2[2] = thresh;
+  i2c_io(FT62XX_ADDR,&i2cinit_1,1,&icdinit_2,1,NULL,0);
+    
+  i2cinit_1 = FT62XX_REG_VENDID;
+  i2cinit_2 = FT62XX_REG_CHIPID;
+  if (i2c_io(FT62XX_ADDR,NULL,0,NULL,0,&i2cinit_1,1) != FT62XX_VENDID) {
     return false;
   }
-  uint8_t id = i2c_io(FT62XX_ADDR,NULL,0,NULL,0,FT62XX_REG_CHIPID,1);
+  uint8_t id = i2c_io(FT62XX_ADDR,NULL,0,NULL,0,&i2cinit_2,1);
   if ((id != FT6206_CHIPID) && (id != FT6236_CHIPID) && (id != FT6236U_CHIPID)) {
     return false;
   }
