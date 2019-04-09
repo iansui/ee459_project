@@ -131,28 +131,33 @@ void drawGPS(){
 		drawString(lcd_output_buf, 50, 10, 10, text_color);
 	}
 	else{
-		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Goal:     %s, %s", goal_lat_str, goal_long_str);
-		draw_box(10, 10, LCD_Width-1,20, background_color);
+		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "%s", goal_title);
+		draw_box(10, 10, LCD_Width-20, 20, background_color);
 		drawString(lcd_output_buf, 50, 10, 10, text_color);
-		_delay_ms(10);
+		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
+
+		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Goal:     %s, %s", goal_lat_str, goal_long_str);
+		draw_box(10, 30, LCD_Width-20, 40, background_color);
+		drawString(lcd_output_buf, 50, 10, 30, text_color);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 		//print current location
 		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Current:  %s, %s", curr_lat_str, curr_long_str);
-		draw_box(10, 30, LCD_Width-1, 40, background_color);
-		drawString(lcd_output_buf, 50, 10, 30, text_color);
-		_delay_ms(10);
+		draw_box(10, 50, LCD_Width-20, 60, background_color);
+		drawString(lcd_output_buf, 50, 10, 50, text_color);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
-
 
 		//print distance
 		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Distance: %s %s feet", curr_direction_str,  curr_distance_str);
-		draw_box(10, 50, LCD_Width-1, 60, background_color);
-		drawString(lcd_output_buf, 50, 10, 50, text_color);
-		_delay_ms(10);
+		draw_box(10, 70, LCD_Width-20, 80, background_color);
+		drawString(lcd_output_buf, 50, 10, 70, text_color);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
+	}
+}
 
-		// draw_box(0, 0, LCD_Width-1, LCD_Height-1, background_color);
+void drawArrow(){
+	if(fix == 0){
+		return;
 	}
 }
 
@@ -165,7 +170,7 @@ int main(void){
     DDRC |= LCD_Ctrl_B;         // Set control port bits for output
     lcd_init();               // Initialize the LCD display
 	background_color = color565(255,255,255);
-	background_color1 = color565(0,0,255);
+	background_color_test = color565(0,0,255);
 	text_color = color565(0, 0, 0);
 	
 	//initialize serial connection
@@ -176,7 +181,12 @@ int main(void){
 	int gps_iteration_count = 0;
 
 	//draw background
-	draw_box(0, 0, LCD_Width-1, LCD_Height-1, background_color1);
+	draw_box(0, 0, LCD_Width-1, LCD_Height-1, background_color_test);
+
+	//set up testing data
+	goal_lat = 34.020506;
+	goal_long = -118.289114;
+	strcpy(goal_title, "Viterbi E-quad Fountain");
 
 	//start infinite loop
 	while(1){
@@ -200,7 +210,6 @@ int main(void){
 			gps_iteration_count = 0;
 			
 			drawGPS();
-			_delay_ms(100);
 		}
 
 	}
