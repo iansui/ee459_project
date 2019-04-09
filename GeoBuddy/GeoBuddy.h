@@ -26,6 +26,7 @@ uint16_t curr_direction;
 char curr_direction_str[3];
 
 uint16_t background_color;
+uint16_t background_color1;
 uint16_t text_color;
 
 #endif

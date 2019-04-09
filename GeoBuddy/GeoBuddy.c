@@ -69,7 +69,7 @@ void update_distance(double goal_lat, double goal_long){
 	double a = sin(lat_diff/2) * sin(lat_diff/2) + cos(curr_lat_rad) * cos(goal_lat_rad) * sin(long_diff/2) * sin(long_diff/2);
 	double c = 2 * atan2(sqrt(a), sqrt(1-a));
 	curr_distance = (int)(R * c * 3.28084);
-	dtostrf(curr_distance, 12, 7, curr_distance_str);			
+	dtostrf(curr_distance, 1, 0, curr_distance_str);			
 
 	//calculate current direction of the goal location
 	double x = sin(goal_long_rad - curr_long_rad)* cos(goal_lat_rad);
@@ -79,7 +79,7 @@ void update_distance(double goal_lat, double goal_long){
 	
 	if(brng > -22.5 && brng <= 22.5){
 		curr_direction = 0;
-		strcpy(curr_direction_str, " E");
+		strcpy(curr_direction_str, "E ");
 	}
 	else if(brng > 22.5 && brng <= 67.5){
 		curr_direction = 1;
@@ -87,7 +87,7 @@ void update_distance(double goal_lat, double goal_long){
 	}
 	else if(brng > 67.5 && brng <= 112.5){
 		curr_direction = 2;
-		strcpy(curr_direction_str, " N");
+		strcpy(curr_direction_str, "N ");
 	}
 	else if(brng > 112.5  && brng <= 157.5){
 		curr_direction = 3;
@@ -95,7 +95,7 @@ void update_distance(double goal_lat, double goal_long){
 	}
 	else if(brng > 157.5 || brng <= -157.5){
 		curr_direction = 4;
-		strcpy(curr_direction_str, " W");
+		strcpy(curr_direction_str, "W ");
 	}
 	else if(brng > -157.5 && brng <= -112.5){
 		curr_direction = 5;
@@ -103,12 +103,15 @@ void update_distance(double goal_lat, double goal_long){
 	}
 	else if(brng > -112.5 && brng <= -67.5){
 		curr_direction = 6;
-		strcpy(curr_direction_str, " S");
+		strcpy(curr_direction_str, "S ");
 	}
 	else {
 		curr_direction = 7;
 		strcpy(curr_direction_str, "SE");
 	}
+
+	dtostrf(goal_lat, 10, 7, goal_lat_str);
+	dtostrf(goal_long, 10, 7, goal_long_str);
 
 	//output current distance and direction data through serial connection
 	snprintf(serial_output_buf, sizeof(serial_output_buf),
@@ -128,28 +131,28 @@ void drawGPS(){
 		drawString(lcd_output_buf, 50, 10, 10, text_color);
 	}
 	else{
-		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Goal: %s, %s", goal_lat_str, goal_long_str);
-		draw_box(10, 10, LCD_Width-1, 20, background_color);
+		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Goal:     %s, %s", goal_lat_str, goal_long_str);
+		draw_box(10, 10, LCD_Width-1,20, background_color);
 		drawString(lcd_output_buf, 50, 10, 10, text_color);
-		_delay_ms(50);
+		_delay_ms(10);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
-
 		//print current location
-		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Current: %s, %s", curr_lat_str, curr_long_str);
-		draw_box(30, 10, LCD_Width-1, 20, background_color);
-		drawString(lcd_output_buf, 50, 30, 10, text_color);
-		_delay_ms(50);
+		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Current:  %s, %s", curr_lat_str, curr_long_str);
+		draw_box(10, 30, LCD_Width-1, 40, background_color);
+		drawString(lcd_output_buf, 50, 10, 30, text_color);
+		_delay_ms(10);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 
 		//print distance
 		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Distance: %s %s feet", curr_direction_str,  curr_distance_str);
-		draw_box(70, 10, LCD_Width-1, 20, background_color);
-		drawString(lcd_output_buf, 50, 70, 10, text_color);
-		_delay_ms(50);
+		draw_box(10, 50, LCD_Width-1, 60, background_color);
+		drawString(lcd_output_buf, 50, 10, 50, text_color);
+		_delay_ms(10);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
+		// draw_box(0, 0, LCD_Width-1, LCD_Height-1, background_color);
 	}
 }
 
@@ -162,6 +165,7 @@ int main(void){
     DDRC |= LCD_Ctrl_B;         // Set control port bits for output
     lcd_init();               // Initialize the LCD display
 	background_color = color565(255,255,255);
+	background_color1 = color565(0,0,255);
 	text_color = color565(0, 0, 0);
 	
 	//initialize serial connection
@@ -172,7 +176,7 @@ int main(void){
 	int gps_iteration_count = 0;
 
 	//draw background
-	draw_box(0, 0, LCD_Width-1, LCD_Height-1, background_color);
+	draw_box(0, 0, LCD_Width-1, LCD_Height-1, background_color1);
 
 	//start infinite loop
 	while(1){
