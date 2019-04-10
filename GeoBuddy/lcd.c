@@ -360,22 +360,136 @@ void drawHLine(int16_t x, int16_t y,int16_t length, uint16_t color) {
     drawLine(x, y, x+length-1, y, color);
 }
 
-void drawDirectionArrow(uint16_t curr_direction, uint16_t color){
-    if(curr_direction == 2){
+void drawDirectionArrow(uint16_t direction, uint16_t color){
+    //draw N arrow
+    if(direction == 2){
         draw_box(110, 130, 130, 170, color);
-        drawTriangle(90, 130, 120, 110, 150, 130, color);
+        drawTriangle(100, 130, 120, 110, 140, 130, color);
     }
-    if(curr_direction == 6){
+    //draw S arrow
+    if(direction == 6){
         draw_box(110, 130, 130, 170, color);
-        drawTriangle(90, 170, 120, 190, 150, 170, color);
+        drawTriangle(100, 170, 120, 190, 140, 170, color);
+    }
+    //draw E arrow
+    if(direction == 0){
+        draw_box(100, 140, 140, 160, color);
+        drawTriangle(160, 150, 140, 130, 140, 170, color);
+    }
+
+    //draw W arrow
+    if(direction == 4){
+        draw_box(100, 140, 140, 160, color);
+        drawTriangle(80, 150, 100, 130, 100, 170, color);
+    }
+
+    //draw NE arrow
+    if(direction == 1){
+
+        // double theta = (M_PI/4)*(-1);
+        // int16_t x0 = (140-120)*cos(theta) - (140-150)*sin(theta) + 120;
+        // int16_t y0 = (140-120)*sin(theta) + (140-150)*cos(theta) + 150;
+        // int16_t x1 = (140-120)*cos(theta) - (160-150)*sin(theta) + 120;
+        // int16_t y1 = (140-120)*sin(theta) + (160-150)*cos(theta) + 150;
+        // int16_t x2 = (100-120)*cos(theta) - (160-150)*sin(theta) + 120;
+        // int16_t y2 = (100-120)*sin(theta) + (160-150)*cos(theta) + 150;
+        // int16_t x3 = (100-120)*cos(theta) - (140-150)*sin(theta) + 120;
+        // int16_t y3 = (100-120)*sin(theta) + (140-150)*cos(theta) + 150;
+        // int16_t x4 = (160-120)*cos(theta) - (150-150)*sin(theta) + 120;
+        // int16_t y4 = (160-120)*sin(theta) + (150-150)*cos(theta) + 150;
+        // int16_t x5 = (140-120)*cos(theta) - (130-150)*sin(theta) + 120;
+        // int16_t y5 = (140-120)*sin(theta) + (130-150)*cos(theta) + 150;
+        // int16_t x6 = (140-120)*cos(theta) - (170-150)*sin(theta) + 120;
+        // int16_t y6 = (140-120)*sin(theta) + (170-150)*cos(theta) + 150;
+        // drawTriangle(x3, y3, x1, y1, x0, y0, color);
+        // drawTriangle(x3, y3, x1, y1, x2, y2, color);
+        // drawTriangle(x4, y4, x5, y5, x6, y6, color);
+
+        drawTriangle(98, 157, 141, 142, 127, 128, color);
+        drawTriangle(98, 157, 142, 142, 112, 171, color);
+        drawTriangle(148, 121, 120, 121, 148, 150, color);
+    }
+
+    //draw SW arrow
+    if(direction == 5){
+        // double theta = (M_PI/4)*(-1);
+        // int16_t x0 = (140-120)*cos(theta) - (140-150)*sin(theta) + 120;
+        // int16_t y0 = (140-120)*sin(theta) + (140-150)*cos(theta) + 150;
+        // int16_t x1 = (140-120)*cos(theta) - (160-150)*sin(theta) + 120;
+        // int16_t y1 = (140-120)*sin(theta) + (160-150)*cos(theta) + 150;
+        // int16_t x2 = (100-120)*cos(theta) - (160-150)*sin(theta) + 120;
+        // int16_t y2 = (100-120)*sin(theta) + (160-150)*cos(theta) + 150;
+        // int16_t x3 = (100-120)*cos(theta) - (140-150)*sin(theta) + 120;
+        // int16_t y3 = (100-120)*sin(theta) + (140-150)*cos(theta) + 150;
+        // int16_t x4 = (80-120)*cos(theta) - (150-150)*sin(theta) + 120;
+        // int16_t y4 = (80-120)*sin(theta) + (150-150)*cos(theta) + 150;
+        // int16_t x5 = (100-120)*cos(theta) - (130-150)*sin(theta) + 120;
+        // int16_t y5 = (100-120)*sin(theta) + (130-150)*cos(theta) + 150;
+        // int16_t x6 = (100-120)*cos(theta) - (170-150)*sin(theta) + 120;
+        // int16_t y6 = (100-120)*sin(theta) + (170-150)*cos(theta) + 150;
+        // drawTriangle(x3, y3, x1, y1, x0, y0, color);
+        // drawTriangle(x3, y3, x1, y1, x2, y2, color);
+        // drawTriangle(x4, y4, x5, y5, x6, y6, color);
+
+        drawTriangle(98, 157, 141, 142, 127, 128, color);
+        drawTriangle(98, 157, 141, 142, 112, 171, color);
+        drawTriangle(91, 178, 91, 150, 120, 178, color);
+    }
+
+    //draw NW arrow
+    if(direction == 3){
+
+        // double theta = M_PI/4;
+        // int16_t x0 = (140-120)*cos(theta) - (140-150)*sin(theta) + 120;
+        // int16_t y0 = (140-120)*sin(theta) + (140-150)*cos(theta) + 150;
+        // int16_t x1 = (140-120)*cos(theta) - (160-150)*sin(theta) + 120;
+        // int16_t y1 = (140-120)*sin(theta) + (160-150)*cos(theta) + 150;
+        // int16_t x2 = (100-120)*cos(theta) - (160-150)*sin(theta) + 120;
+        // int16_t y2 = (100-120)*sin(theta) + (160-150)*cos(theta) + 150;
+        // int16_t x3 = (100-120)*cos(theta) - (140-150)*sin(theta) + 120;
+        // int16_t y3 = (100-120)*sin(theta) + (140-150)*cos(theta) + 150;
+        // int16_t x4 = (80-120)*cos(theta) - (150-150)*sin(theta) + 120;
+        // int16_t y4 = (80-120)*sin(theta) + (150-150)*cos(theta) + 150;
+        // int16_t x5 = (100-120)*cos(theta) - (130-150)*sin(theta) + 120;
+        // int16_t y5 = (100-120)*sin(theta) + (130-150)*cos(theta) + 150;
+        // int16_t x6 = (100-120)*cos(theta) - (170-150)*sin(theta) + 120;
+        // int16_t y6 = (100-120)*sin(theta) + (170-150)*cos(theta) + 150;
+        // drawTriangle(x3, y3, x1, y1, x0, y0, color);
+        // drawTriangle(x3, y3, x1, y1, x2, y2, color);
+        // drawTriangle(x4, y4, x5, y5, x6, y6, color);
+
+        drawTriangle(112, 128, 127, 171, 141, 157, color);
+        drawTriangle(112, 128, 127, 171, 98, 142, color);
+        drawTriangle(91, 121, 120, 121, 91, 150, color);
+    }
+
+    //draw SE arrow
+    if(direction == 7){
+
+        // double theta = M_PI/4;
+        // int16_t x0 = (140-120)*cos(theta) - (140-150)*sin(theta) + 120;
+        // int16_t y0 = (140-120)*sin(theta) + (140-150)*cos(theta) + 150;
+        // int16_t x1 = (140-120)*cos(theta) - (160-150)*sin(theta) + 120;
+        // int16_t y1 = (140-120)*sin(theta) + (160-150)*cos(theta) + 150;
+        // int16_t x2 = (100-120)*cos(theta) - (160-150)*sin(theta) + 120;
+        // int16_t y2 = (100-120)*sin(theta) + (160-150)*cos(theta) + 150;
+        // int16_t x3 = (100-120)*cos(theta) - (140-150)*sin(theta) + 120;
+        // int16_t y3 = (100-120)*sin(theta) + (140-150)*cos(theta) + 150;
+        // int16_t x4 = (160-120)*cos(theta) - (150-150)*sin(theta) + 120;
+        // int16_t y4 = (160-120)*sin(theta) + (150-150)*cos(theta) + 150;
+        // int16_t x5 = (140-120)*cos(theta) - (130-150)*sin(theta) + 120;
+        // int16_t y5 = (140-120)*sin(theta) + (130-150)*cos(theta) + 150;
+        // int16_t x6 = (140-120)*cos(theta) - (170-150)*sin(theta) + 120;
+        // int16_t y6 = (140-120)*sin(theta) + (170-150)*cos(theta) + 150;
+        // drawTriangle(x3, y3, x1, y1, x0, y0, color);
+        // drawTriangle(x3, y3, x1, y1, x2, y2, color);
+        // drawTriangle(x4, y4, x5, y5, x6, y6, color);
+
+        drawTriangle(112, 128, 127, 171, 141, 157, color);
+        drawTriangle(112, 128, 127, 171, 98, 142, color);
+        drawTriangle(148, 178, 148, 150, 120, 178, color);
     }
 }
-
-// void drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, int uint16_t color){
-//     drawLine(x, y, x1, y1, color);
-//     drawLine(x, y, x2, y2, color);
-//     drawLine(x1, y1, x2, y2, color);
-// }
 
 
 /*

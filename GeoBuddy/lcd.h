@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include "gfxfont.h"
 #include "glcdfont.c"
+#include <math.h>
 
 
 #if !defined(__INT_MAX__) || (__INT_MAX__ > 0xFFFF)
