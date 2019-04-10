@@ -14,6 +14,9 @@ https://www.adafruit.com/product/746
 ### RFID/NFC receiver  
 https://www.adafruit.com/product/364
 
+### Accelerometer  
+https://github.com/adafruit/Adafruit_LSM303  
+https://learn.adafruit.com/flora-accelerometer/  
 
 
 ## Resources 
