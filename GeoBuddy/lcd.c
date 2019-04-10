@@ -360,6 +360,17 @@ void drawHLine(int16_t x, int16_t y,int16_t length, uint16_t color) {
     drawLine(x, y, x+length-1, y, color);
 }
 
+void drawDirectionArrow(uint16_t curr_direction, uint16_t color){
+    if(curr_direction == 2){
+        draw_box(110, 130, 130, 170, color);
+        drawTriangle(90, 130, 120, 110, 150, 130, color);
+    }
+    if(curr_direction == 6){
+        draw_box(110, 130, 130, 170, color);
+        drawTriangle(90, 170, 120, 190, 150, 170, color);
+    }
+}
+
 // void drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, int uint16_t color){
 //     drawLine(x, y, x1, y1, color);
 //     drawLine(x, y, x2, y2, color);

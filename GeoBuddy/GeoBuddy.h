@@ -29,6 +29,7 @@ char curr_direction_str[3];
 uint16_t background_color;
 uint16_t background_color_test;
 uint16_t text_color;
+uint16_t arrow_color;
 
 int arrive_threshold = 50;
 

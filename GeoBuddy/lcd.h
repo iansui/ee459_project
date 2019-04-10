@@ -46,6 +46,7 @@ void drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color);
 void drawHLine(int16_t x, int16_t y, int16_t length, uint16_t color);
 void drawVLine(int16_t x, int16_t y, int16_t length,uint16_t color);
 void drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
+void drawDirectionArrow(uint16_t curr_direction, uint16_t color);
 
 
 /*

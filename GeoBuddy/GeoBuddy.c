@@ -129,13 +129,29 @@ void drawGPS(){
 		// drawLine(90, 100, 180, 200, background_color);
 		// drawVLine(90, 100, 100, color565(255, 255, 255));
 		// drawHLine(90, 100, 100, color565(255, 0, 0))
-		draw_box(90, 100, 150, 120, background_color);
-		drawTriangle(150, 90, 150, 130, 170, 110, color565(255,0,0));
+		// draw_box(90, 100, 150, 120, background_color);
+		// drawTriangle(150, 90, 150, 130, 170, 110, color565(255,0,0));
+		draw_box(70, 100, 170, 200, background_color);
+		drawDirectionArrow(2, arrow_color);
+		_delay_ms(3000);
+		draw_box(70, 100, 170, 200, background_color);
+		drawDirectionArrow(6, arrow_color);
+		_delay_ms(3000);
+
 
 	//if fix is 0, don't print any data yet
 	if(fix == 0){
 		strcpy(lcd_output_buf, "Fetching GPS DATA.....");
+		draw_box(10, 10, LCD_Width-20, 20, background_color);
+		
+		draw_box(10, 30, LCD_Width-20, 40, background_color);
+		draw_box(10, 50, LCD_Width-20, 60, background_color);
+		draw_box(10, 70, LCD_Width-20, 80, background_color);
+
+
 		drawString(lcd_output_buf, 50, 10, 10, text_color);
+		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
+
 	}
 	else{
 		//show the name of the goal location
@@ -180,6 +196,7 @@ int main(void){
 	background_color = color565(255,255,255);
 	background_color_test = color565(0,0,255);
 	text_color = color565(0, 0, 0);
+	arrow_color = color565(255, 0, 0);
 	
 	//initialize serial connection
 	serial_init();
