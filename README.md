@@ -15,7 +15,7 @@ https://www.adafruit.com/product/746
 https://www.adafruit.com/product/364
 
 ### Accelerometer  
-https://github.com/adafruit/Adafruit_LSM303  
+https://github.com/adafruit/Adafruit_LSM303DLHC  
 https://learn.adafruit.com/flora-accelerometer/  
 
 
