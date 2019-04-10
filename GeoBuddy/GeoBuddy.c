@@ -135,49 +135,54 @@ void drawGPS(){
 		draw_box(10, 50, LCD_Width-20, 60, background_color);
 		draw_box(10, 70, LCD_Width-20, 80, background_color);
 
-		drawString(lcd_output_buf, 50, 10, 10, text_color);
+		drawString(lcd_output_buf, 50, 12, 12, text_color);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
+
+		for(int i = 0; i < 8; i++){
+			draw_box(70, 100, 170, 200, background_color);
+			drawDirectionArrow(i, arrow_color);
+			_delay_ms(10);
+		}
 
 	}
 	else{
 		//show the name of the goal location
 		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "%s", goal_title);
 		draw_box(10, 10, LCD_Width-20, 20, background_color);
-		drawString(lcd_output_buf, 50, 10, 10, text_color);
+		drawString(lcd_output_buf, 50, 12, 12, text_color);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 		//show the coordinates of the goal location
 		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Goal:     %s, %s", goal_lat_str, goal_long_str);
 		draw_box(10, 30, LCD_Width-20, 40, background_color);
-		drawString(lcd_output_buf, 50, 10, 30, text_color);
+		drawString(lcd_output_buf, 50, 12, 32, text_color);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 		//show the coordinates of the current location
 		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Current:  %s, %s", curr_lat_str, curr_long_str);
 		draw_box(10, 50, LCD_Width-20, 60, background_color);
-		drawString(lcd_output_buf, 50, 10, 50, text_color);
+		drawString(lcd_output_buf, 50, 12, 52, text_color);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 		//show the distance between current and goal
 		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Distance: %s %s feet", curr_direction_str,  curr_distance_str);
 		draw_box(10, 70, LCD_Width-20, 80, background_color);
-		drawString(lcd_output_buf, 50, 10, 70, text_color);
+		drawString(lcd_output_buf, 50, 12, 72, text_color);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
-		//draw direction arrow
-		draw_box(70, 100, 170, 200, background_color);
 
-
-	}
-
-	while(true){
-		for(int i = 0; i < 8; i++){
+		if(curr_distance > arrive_threshold){
+			//draw direction arrow
 			draw_box(70, 100, 170, 200, background_color);
-			drawDirectionArrow(i, arrow_color);
-			_delay_ms(500);
+			drawDirectionArrow(curr_direction, arrow_color);
+		}
+		else{
+			draw_box(70, 100, 170, 200, background_color);
+			strcpy(lcd_output_buf, "Arrived!");
+			drawString(lcd_output_buf, 50, 100, 120, arrow_color);
+			memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 		}
 	}
-
 }
 
 int main(void){
@@ -228,7 +233,6 @@ int main(void){
 			update_user_location(); 
 			update_distance(goal_lat, goal_long);
 			gps_iteration_count = 0;
-			
 			drawGPS();
 		}
 
