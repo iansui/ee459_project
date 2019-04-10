@@ -5,13 +5,14 @@ void update_user_position();
 void update_distance(double goal_lat, double goal_long);
 
 char serial_output_buf[256];
-char lcd_output_buf[50];
+char lcd_output_buf[45];
 
 double goal_lat;
 double goal_long;
 char goal_lat_str[15];
 char goal_long_str[15];
 char goal_title[30];
+char goal_info[216];
 
 double curr_lat;
 double curr_long;

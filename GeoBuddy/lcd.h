@@ -8,6 +8,7 @@
 #include "gfxfont.h"
 #include "glcdfont.c"
 #include <math.h>
+#include <string.h>
 
 
 #if !defined(__INT_MAX__) || (__INT_MAX__ > 0xFFFF)
@@ -41,6 +42,8 @@ uint16_t color565(uint8_t, uint8_t, uint8_t);
 void drawPixel(int16_t x, int16_t y, uint16_t color);
 void drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color, uint8_t size);
 void drawString(char* str, int size, int16_t x, int16_t y, uint16_t color);
+void drawParagragh(char* str, int size, uint16_t color);
+
 
 
 void drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color);
