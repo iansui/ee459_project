@@ -300,6 +300,30 @@ void drawString(char* str, int size, int16_t x, int16_t y, uint16_t color){
     }
 }
 
+void drawParagragh(char* str, int size, uint16_t color){
+    
+    char line[37];
+    int counter = 0;
+    int line_y = 110;
+    while(1){
+        if(size <= 36 || (counter + 36 > size)){
+            strncpy(line, &str[counter], sizeof(line)-1);
+            line[36] = '\0';
+            drawString(line, sizeof(line), 12, line_y, color);
+            return;
+        }
+        else{
+            strncpy(line, &str[counter], sizeof(line)-1);
+            line[36] = '\0';
+            drawString(line, sizeof(line), 12, line_y, color);
+            memset(line, 0, sizeof(line));
+            counter += (sizeof(line)-1);
+            line_y += 12;
+        }
+    }
+
+}
+
 
 /*
     draw a line from (x0, y0) to (x1, y1)

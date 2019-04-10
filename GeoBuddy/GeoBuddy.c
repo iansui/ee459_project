@@ -126,6 +126,12 @@ void update_distance(double goal_lat, double goal_long){
 
 void drawGPS(){
 
+	draw_box(10, 10, LCD_Width-10, 20, background_color);
+	draw_box(10, 30, LCD_Width-10, 40, background_color);
+	draw_box(10, 50, LCD_Width-10, 60, background_color);
+	draw_box(10, 70, LCD_Width-10, 80, background_color);
+
+	
 	//if fix is 0, don't print any data yet
 	if(fix == 0){
 		strcpy(lcd_output_buf, "Fetching GPS DATA.....");
@@ -177,10 +183,10 @@ void drawGPS(){
 			drawDirectionArrow(curr_direction, arrow_color);
 		}
 		else{
-			draw_box(70, 100, 170, 200, background_color);
-			strcpy(lcd_output_buf, "Arrived!");
-			drawString(lcd_output_buf, 50, 100, 120, arrow_color);
-			memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
+			draw_box(10, 100, 230, 200, background_color);
+			drawParagragh(goal_info, sizeof(goal_info), text_color);
+			_delay_ms(100000);
+			draw_box(10, 100, 230, 200, background_color_test);
 		}
 	}
 }
@@ -212,6 +218,7 @@ int main(void){
 	goal_lat = 34.020506;
 	goal_long = -118.289114;
 	strcpy(goal_title, "Viterbi E-quad Fountain");
+	strncpy(goal_info, "This is a test message for drawParagraph(). If there is enough memory space, we can use this function to display some short info of the goal location. The max length is 6 lines with 36 char in each line", sizeof(goal_info));
 
 	//start infinite loop
 	while(1){
