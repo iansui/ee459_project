@@ -19,10 +19,14 @@ https://github.com/adafruit/Adafruit_LSM303DLHC
 https://learn.adafruit.com/flora-accelerometer/  
 
 
+
 ## Resources 
 
 ### I2C Protocol
 https://learn.sparkfun.com/tutorials/i2c/all
+
+Multiple Device on I2C Protocol
+https://www.youtube.com/watch?v=QQLfzlPGjjE
 
 ### SPI Protocol
 https://learn.sparkfun.com/tutorials/serial-peripheral-interface-spi/all
