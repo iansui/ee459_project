@@ -11,6 +11,12 @@ bool touch_init(){
     touch_threshold = 128;
     touch_reg_numtouches = 0x02;
 
+    touchX[0] = 0;
+    touchX[1] = 0;
+    touchY[0] = 0;
+    touchY[1] = 0;
+    touches = 0;
+    
     uint8_t status = i2c_io(touch_address, &touch_threshold, 1, NULL, 0, NULL, 0);
 	if(status == 0){
         return true;
@@ -192,14 +198,49 @@ nakstop:                                    // Come here to send STOP after a NA
     return(status);
 }
 
-uint8_t touched(){
+
+void update_touch(){
+
+    // update num of touch points
     uint8_t result = -1;
     uint8_t status = i2c_io(touch_address, &touch_reg_numtouches, 1, NULL, 0, &result, 1);
-
     if(status != 0){
-        return -1;
+        touches = -1;
     }
     else{
-        return result;
+        touches = result;
     }
+
+    //update point0
+    uint8_t index = 0x03;
+    i2c_io(touch_address, &index, 1, NULL, 0, &result, 1);
+    touchX[0] = result & 0x0F;
+    touchX[0] <<= 8;
+    index = 0x04;
+    i2c_io(touch_address, &index, 1, NULL, 0, &result, 1);
+    touchX[0] |= result;
+    index = 0x05;
+    i2c_io(touch_address, &index, 1, NULL, 0, &result, 1);
+    touchY[0] = result & 0x0F;
+    touchY[0] <<= 8;
+    index = 0x06;
+    i2c_io(touch_address, &index, 1, NULL, 0, &result, 1);
+    touchY[0] |= result;
+
+    //update point1
+    index = 0x09;
+    i2c_io(touch_address, &index, 1, NULL, 0, &result, 1);
+    touchX[1] = result & 0x0F;
+    touchX[1] <<= 8;
+    index = 0x0a;
+    i2c_io(touch_address, &index, 1, NULL, 0, &result, 1);
+    touchX[1] |= result;
+    index = 0x0b;
+    i2c_io(touch_address, &index, 1, NULL, 0, &result, 1);
+    touchY[1] = result & 0x0F;
+    touchY[1] <<= 8;
+    index = 0x0c;
+    i2c_io(touch_address, &index, 1, NULL, 0, &result, 1);
+    touchY[1] |= result;
+
 }
