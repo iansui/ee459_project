@@ -1,14 +1,24 @@
 #include "i2c.h"
 
-/*
-  i2c_init - Initialize the I2C port
-*/
-void i2c_init(uint8_t bdiv)
-{
-    TWSR = 0;                           // Set prescalar for 1
-    TWBR = bdiv;                        // Set bit rate register
+void i2c_init(uint8_t bdiv){
+    TWSR = 0;           // Set prescalar for 1
+    TWBR = bdiv;        // Set bit rate register
 }
 
+bool touch_init(){
+
+    touch_address = 0x70;
+    touch_threshold = 128;
+    touch_reg_numtouches = 0x02;
+
+    uint8_t status = i2c_io(touch_address, &touch_threshold, 1, NULL, 0, NULL, 0);
+	if(status == 0){
+        return true;
+	}
+	else{
+        return false;
+	}
+}
 /*
   i2c_io - write and read bytes to a slave I2C device
 
@@ -180,4 +190,16 @@ nakstop:                                    // Come here to send STOP after a NA
         TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWSTO);  // Send STOP condition
 
     return(status);
+}
+
+uint8_t touched(){
+    uint8_t result = -1;
+    uint8_t status = i2c_io(touch_address, &touch_reg_numtouches, 1, NULL, 0, &result, 1);
+
+    if(status != 0){
+        return -1;
+    }
+    else{
+        return result;
+    }
 }

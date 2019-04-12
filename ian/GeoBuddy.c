@@ -213,23 +213,11 @@ int main(void){
 	gps_common_init();
 	int gps_iteration_count = 0;
 
-	//draw background
-	draw_box(0, 0, LCD_Width-1, LCD_Height-1, background_color);
-
 	// initialize i2c port
 	i2c_init(BDIV);
-	uint8_t threshold = 128;
-	uint8_t status;
-	status = i2c_io(TOUCH_DEVICE_ADDR, &threshold, 1, NULL, 0, NULL, 0);
-	if(status == 0){
-		drawChar(12, 12, 'N', text_color, 1);
-	}
-	else{
-		drawChar(12, 12, 'N', text_color, 1);
 
-	}
-
-
+	// initialize touch
+	touch_init();	
 
 	//set up testing data
 	goal_lat = 34.020506;
@@ -238,41 +226,22 @@ int main(void){
 	strncpy(goal_info, "This is a test message for drawParagraph(). If there is enough memory space, we can use this function to display some short info of the goal location. The max length is 6 lines with 36 char in each line", sizeof(goal_info));
 
 	
+	//draw background
+	draw_box(0, 0, LCD_Width-1, LCD_Height-1, background_color_test);
+
 	//start infinite loop
 	while(1){
 
-		//test i2c
-		uint8_t x = 30;
 
-		draw_box(0, 0, 50, 50, background_color);
+		uint8_t x = touched();
 
-		uint8_t temp = TOUCH_REG_NUMTOUCHES;
+		//show the name of the goal location
+		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "%i", x);
+		draw_box(10, 10, 30, 30, background_color);
+		drawString(lcd_output_buf, 50, 12, 12, text_color);
+		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
-		status = i2c_io(TOUCH_DEVICE_ADDR, &temp, 1, NULL, 0, &x, 1);
-		if(status == 0){
-			drawChar(12, 12, 'Y', text_color, 1);
-		}	
-		else{
-			drawChar(12, 12, 'N', text_color, 1);
-
-		}
-
-		if(x != 30){
-			drawChar(48, 48, 'Y', text_color, 1);
-			
-			if(x == 0){
-				drawChar(10, 10, '0', text_color, 1);
-			}
-			else{
-				drawChar(10, 10, '1', text_color, 1);
-			}
-		}	
-		else{
-			drawChar(48, 48, 'N', text_color, 1);
-
-		}
-
-		_delay_ms(1000);
+		_delay_ms(100);
 
 /*
 		_delay_ms(1);
