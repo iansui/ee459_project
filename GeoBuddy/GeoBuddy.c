@@ -16,6 +16,7 @@
 #include "serial.h"
 #include "lcd.h"
 #include "GeoBuddy.h"
+#include "i2c.h"
 
 void update_user_location(){
 
@@ -135,20 +136,16 @@ void drawGPS(){
 	//if fix is 0, don't print any data yet
 	if(fix == 0){
 		strcpy(lcd_output_buf, "Fetching GPS DATA.....");
-		draw_box(10, 10, LCD_Width-20, 20, background_color);
-
-		draw_box(10, 30, LCD_Width-20, 40, background_color);
-		draw_box(10, 50, LCD_Width-20, 60, background_color);
-		draw_box(10, 70, LCD_Width-20, 80, background_color);
-
+	
 		drawString(lcd_output_buf, 50, 12, 12, text_color);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
-		for(int i = 0; i < 8; i++){
-			draw_box(70, 100, 170, 200, background_color);
-			drawDirectionArrow(i, arrow_color);
-			_delay_ms(10);
-		}
+
+		// for(int i = 0; i < 8; i++){
+		// 	draw_box(70, 100, 170, 200, background_color);
+		// 	drawDirectionArrow(i, arrow_color);
+		// 	_delay_ms(5);
+		// }
 
 	}
 	else{
@@ -211,8 +208,20 @@ int main(void){
 	gps_common_init();
 	int gps_iteration_count = 0;
 
+	// initialize i2c
+	i2c_init(BDIV);
+
+	// initialize touch
+	touch_init();	
+
 	//draw background
 	draw_box(0, 0, LCD_Width-1, LCD_Height-1, background_color_test);
+
+	draw_box(10, 10, LCD_Width-20, 20, background_color);
+	draw_box(10, 30, LCD_Width-20, 40, background_color);
+	draw_box(10, 50, LCD_Width-20, 60, background_color);
+	draw_box(10, 70, LCD_Width-20, 80, background_color);
+	draw_box(70, 100, 170, 200, background_color);
 
 	//set up testing data
 	goal_lat = 34.020506;
@@ -220,11 +229,12 @@ int main(void){
 	strcpy(goal_title, "Viterbi E-quad Fountain");
 	strncpy(goal_info, "This is a test message for drawParagraph(). If there is enough memory space, we can use this function to display some short info of the goal location. The max length is 6 lines with 36 char in each line", sizeof(goal_info));
 
+
 	//start infinite loop
 	while(1){
 
 		_delay_ms(1);
-			
+
 		//update user location
 		gps_iteration_count++;
 		gps_read();
@@ -241,6 +251,19 @@ int main(void){
 			update_distance(goal_lat, goal_long);
 			gps_iteration_count = 0;
 			drawGPS();
+
+			//the following part needs to be changed as an interrupt
+			update_touch();
+			snprintf(lcd_output_buf, sizeof(lcd_output_buf), "num of touches: %i", touches);
+			draw_box(10, 250, LCD_Width-20, 270, background_color);
+			drawString(lcd_output_buf, 50, 12, 252, text_color);
+			memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
+
+			snprintf(lcd_output_buf, sizeof(lcd_output_buf), "point0: %i %i", touchX[0], touchY[0]);
+			draw_box(10, 270, LCD_Width-20, 290, background_color);
+			drawString(lcd_output_buf, 50, 12, 272, text_color);
+			memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
+
 		}
 
 	}
