@@ -25,7 +25,8 @@ void gps_common_init(void);
 // void gps_pause(bool b);
 bool parseNMEA(char *response);
 uint8_t parseHex(char c);
-char gps_read(void);
+char gps_read(char c);
+void gps_read_new(void);
 bool gps_parse(char *);
 
 #endif

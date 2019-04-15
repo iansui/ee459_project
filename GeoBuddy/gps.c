@@ -275,11 +275,11 @@ bool gps_parse(char *nmea) {
   return false;
 }
 
-char gps_read(void) {
+char gps_read(char c) {
 
-  char c = 0;
+  // char c = 0;
   
-  c = serial_in();
+  // c = serial_in();
 
   if (c == '\n') {
     currentline[lineidx] = 0;
@@ -301,6 +301,38 @@ char gps_read(void) {
     lineidx = MAXLINELENGTH-1;
 
   return c;
+}
+
+void gps_read_new(void){
+  char c;
+
+  while(true){
+      c = serial_in();
+
+      if(c == '$'){
+
+        gps_read(c);
+
+        while(true){
+          c = serial_in();
+          gps_read(c);
+          if(c == '\n'){
+            break;
+          }
+        }
+
+        if(gps_newNMEAreceived() == true){
+          bool parse_result = gps_parse(gps_lastNMEA()); 
+          if(!parse_result){
+        	  continue;
+          }
+          else{
+            break;
+          }
+
+        }
+      }
+  }
 }
 
 // Initialization code 
