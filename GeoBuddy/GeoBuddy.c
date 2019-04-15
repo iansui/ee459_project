@@ -257,6 +257,10 @@ int main(void){
 
 			update_user_location();
 			update_distance();
+
+			update_touch();
+			drawTouch();
+			
 			drawGPS();
 			gps_timer = 0;
 		}

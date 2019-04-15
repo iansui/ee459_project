@@ -4,9 +4,8 @@ uint8_t red[8] = { 0, 0xff, 0, 0, 0xff, 0, 0xff, 0xff };
 uint8_t grn[8] = { 0, 0, 0xff, 0, 0xff, 0xff, 0, 0xff };
 uint8_t blu[8] = { 0, 0, 0, 0xff, 0, 0xff, 0xff, 0xff };
 
+//  color_bars - Draw eight color bars on the full screen 
 /*
-  color_bars - Draw eight color bars on the full screen 
-*/
 void color_bars()
 {
     uint8_t i, j, k;
@@ -40,11 +39,12 @@ void color_bars()
 	LCD_CS_Negate;
     }
 }
+*/
 
 
+
+//  boxes - Draws some boxes on the screen with different fill colors
 /*
-  boxes - Draws some boxes on the screen with different fill colors
-
 void boxes()
 {
     draw_box(0, 0, LCD_Width-1, LCD_Height-1, color565(255,255,255));

@@ -27,8 +27,8 @@
 
 GFXfont  *gfxFont;
 
-void color_bars();
-void boxes();
+// void color_bars();
+// void boxes();
 void draw_box(uint16_t, uint16_t, uint16_t, uint16_t, uint16_t);
 void setAddrWindow(uint16_t, uint16_t, uint16_t, uint16_t);
 void regout32(uint8_t, uint32_t);
