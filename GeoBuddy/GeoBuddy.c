@@ -34,7 +34,7 @@ void update_user_location(){
 	dtostrf(curr_lat, 10, 7, curr_lat_str);
 	dtostrf(curr_long, 10, 7, curr_long_str);
 
-/*
+
 	if(fix == 0){
 		snprintf(serial_output_buf, sizeof(serial_output_buf), "DateTime: %u-%u-%u %u:%u:%u \r\n"
 					"Fix: %d, Fix quality: %u, Num Satellites: %u\r\n",
@@ -51,7 +51,7 @@ void update_user_location(){
 	}
 	serial_string_out(serial_output_buf);
 	memset(serial_output_buf, 0, sizeof(serial_output_buf));
-*/
+
 }
 
 
@@ -118,7 +118,7 @@ void update_distance(){
 	dtostrf(goal_lat, 10, 7, goal_lat_str);
 	dtostrf(goal_long, 10, 7, goal_long_str);
 
-/*
+
 	//output current distance and direction data through serial connection
 	snprintf(serial_output_buf, sizeof(serial_output_buf),
 	 "Goal loc: %s, %s\r\n"
@@ -128,7 +128,7 @@ void update_distance(){
 	 , goal_lat_str, goal_long_str, curr_lat_str, curr_long_str, curr_direction_str, brng_str, curr_distance_str);
 	serial_string_out(serial_output_buf);
 	memset(serial_output_buf, 0, sizeof(serial_output_buf));
-*/
+
 
 }
 
@@ -245,9 +245,10 @@ int main(void){
 	//start infinite loop
 	while(1){
 
-		_delay_ms(1);
-		
+		// _delay_ms(1);
+
 		++gps_timer;
+
 
 		if(gps_timer == 15){
 			gps_read_new();
@@ -256,6 +257,10 @@ int main(void){
 			drawTouch();
 
 			update_user_location();
+
+			update_touch();
+			drawTouch();
+
 			update_distance();
 
 			update_touch();
