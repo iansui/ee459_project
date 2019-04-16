@@ -269,16 +269,21 @@ void drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color, uint8_t siz
     if((x >= LCD_Width) || (y >= LCD_Height) || 
         ((x + 6 * size - 1) < 0) ||((y + 8 * size - 1) < 0))
     return;
+
     for(int8_t i=0; i<5; i++ ) 
     { 
         uint8_t line = pgm_read_byte(&font[c * 5 + i]);
         for(int8_t j=0; j<8; j++, line >>= 1) 
         {
             if(line & 1) {
-                if(size == 1)
+                if(size == 1){
                     drawPixel(x+i, y+j, color);
                 } 
+                else{
+                    draw_box(x+i*size, y+j*size, x+i*size+size-1, y+j*size+size-1, color);
+                }
             }
+        }
     }
 }
 
