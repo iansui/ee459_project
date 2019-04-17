@@ -291,7 +291,7 @@ void drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color, uint8_t siz
 draw a string with the first chat at (x, y)
 */
 
-void drawString(char* str, int size, int16_t x, int16_t y, uint16_t color){
+void drawString(char* str, int size, int16_t x, int16_t y, uint16_t color, uint8_t font_size){
     // testing if the x,y is out of bound and whether the size of word can fit in
     if((x >= LCD_Width) || (y >= LCD_Height) || 
         ((x + 6 * size - 1) < 0) ||((y + 8 * size - 1) < 0))
@@ -301,7 +301,7 @@ void drawString(char* str, int size, int16_t x, int16_t y, uint16_t color){
       if(str[i] == '\0'){
         break;
       }
-      drawChar(x+(i*6), y, str[i], color, 1);
+      drawChar(x+(i*(6*font_size)), y, str[i], color, font_size);
     }
 }
 
@@ -314,13 +314,13 @@ void drawParagragh(char* str, int size, uint16_t color){
         if(size <= 36 || (counter + 36 > size)){
             strncpy(line, &str[counter], sizeof(line)-1);
             line[36] = '\0';
-            drawString(line, sizeof(line), 12, line_y, color);
+            drawString(line, sizeof(line), 12, line_y, color, 1);
             return;
         }
         else{
             strncpy(line, &str[counter], sizeof(line)-1);
             line[36] = '\0';
-            drawString(line, sizeof(line), 12, line_y, color);
+            drawString(line, sizeof(line), 12, line_y, color, 1);
             memset(line, 0, sizeof(line));
             counter += (sizeof(line)-1);
             line_y += 12;

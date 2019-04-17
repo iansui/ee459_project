@@ -138,7 +138,7 @@ void drawGPS(){
 	if(fix == 0){
 		draw_box(10, 10, LCD_Width-20, 20, background_color);
 		strcpy(lcd_output_buf, "Fetching GPS DATA.....");
-		drawString(lcd_output_buf, 50, 12, 12, text_color);
+		drawString(lcd_output_buf, 50, 12, 12, text_color, 1);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 		// for(int i = 0; i < 8; i++){
@@ -152,25 +152,25 @@ void drawGPS(){
 		//show the name of the goal location
 		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "%s", goal_title);
 		draw_box(10, 10, LCD_Width-20, 20, background_color);
-		drawString(lcd_output_buf, 50, 12, 12, text_color);
+		drawString(lcd_output_buf, 50, 12, 12, text_color, 1);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 		//show the coordinates of the goal location
 		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Goal:     %s, %s", goal_lat_str, goal_long_str);
 		draw_box(10, 30, LCD_Width-20, 40, background_color);
-		drawString(lcd_output_buf, 50, 12, 32, text_color);
+		drawString(lcd_output_buf, 50, 12, 32, text_color, 1);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 		//show the coordinates of the current location
 		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Current:  %s, %s", curr_lat_str, curr_long_str);
 		draw_box(10, 50, LCD_Width-20, 60, background_color);
-		drawString(lcd_output_buf, 50, 12, 52, text_color);
+		drawString(lcd_output_buf, 50, 12, 52, text_color, 1);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 		//show the distance between current and goal
 		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Distance: %s %s feet", curr_direction_str,  curr_distance_str);
 		draw_box(10, 70, LCD_Width-20, 80, background_color);
-		drawString(lcd_output_buf, 50, 12, 72, text_color);
+		drawString(lcd_output_buf, 50, 12, 72, text_color, 1);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 
@@ -192,12 +192,12 @@ void drawTouch(){
 
 	snprintf(lcd_output_buf, sizeof(lcd_output_buf), "num of touches: %i", touches);
 	draw_box(10, 250, LCD_Width-20, 270, background_color);
-	drawString(lcd_output_buf, 50, 12, 252, text_color);
+	drawString(lcd_output_buf, 50, 12, 252, text_color, 1);
 	memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 	snprintf(lcd_output_buf, sizeof(lcd_output_buf), "point: %i %i", touchX[0], touchY[0]);
 	draw_box(10, 270, LCD_Width-20, 290, background_color);
-	drawString(lcd_output_buf, 50, 12, 272, text_color);
+	drawString(lcd_output_buf, 50, 12, 272, text_color, 1);
 	memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 }
@@ -249,7 +249,6 @@ int main(void){
 
 		++gps_timer;
 
-
 		if(gps_timer == 15){
 			gps_read_new();
 
@@ -272,5 +271,7 @@ int main(void){
 
 		update_touch();
 		drawTouch();
+
 	}
+
 }
