@@ -1,0 +1,48 @@
+#ifndef COMPASS_H
+#define COMPASS_H
+
+#include <avr/io.h>
+#include <stddef.h>
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+
+
+// I2C ADDRESS/BITS
+// #define LSM303_ADDRESS_ACCEL          (0x32 >> 1)         // 0011001x
+// #define LSM303_ADDRESS_MAG            (0x3C >> 1)         // 0011110x
+
+
+uint8_t accel_address;
+uint8_t mag_address;
+uint8_t reg_accel_ctrl_reg1_a;
+uint8_t reg_mag_mr_reg_m;
+uint8_t reg_mag_cra_reg_m;
+uint8_t reg_mag_crb_reg_m;
+
+float _lsm303Mag_Gauss_LSB_XY;
+float _lsm303Mag_Gauss_LSB_Z;
+
+int16_t raw_x;
+int16_t raw_y;
+int16_t raw_z;
+
+float mag_x;
+float mag_y;
+float mag_z;
+
+
+uint8_t compass_init();
+uint8_t update_compass();
+
+char compass_output_buff[256];
+
+char mag_x_str[16];
+char mag_y_str[16];
+char mag_z_str[16];
+
+uint16_t mag_direction;
+
+
+
+#endif
