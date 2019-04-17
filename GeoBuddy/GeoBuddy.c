@@ -190,13 +190,22 @@ void drawGPS(){
 
 void drawTouch(){
 
+
+	//draw test region
+	if(touches > 0){
+			draw_box(LCD_Width-100, 250, LCD_Width -1, LCD_Height-1, color565(255, 255, 0));
+	}
+	else{
+			draw_box(LCD_Width-100, 250, LCD_Width -1, LCD_Height-1, color565(0, 255, 0));
+	}
+
 	snprintf(lcd_output_buf, sizeof(lcd_output_buf), "num of touches: %i", touches);
-	draw_box(10, 250, LCD_Width-20, 270, background_color);
+	draw_box(10, 250, LCD_Width-100, 260, background_color);
 	drawString(lcd_output_buf, 50, 12, 252, text_color, 1);
 	memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 	snprintf(lcd_output_buf, sizeof(lcd_output_buf), "point: %i %i", touchX[0], touchY[0]);
-	draw_box(10, 270, LCD_Width-20, 290, background_color);
+	draw_box(10, 270, LCD_Width-100, 280, background_color);
 	drawString(lcd_output_buf, 50, 12, 272, text_color, 1);
 	memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
