@@ -25,7 +25,8 @@ int curr_distance;
 char curr_distance_str[10];
 
 double brng;
-char brng_str[15];
+char brng_str[5];
+int16_t brng_int;
 uint16_t curr_direction;
 char curr_direction_str[3];
 

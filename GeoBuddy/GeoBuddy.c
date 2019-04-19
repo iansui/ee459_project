@@ -127,7 +127,10 @@ void update_distance(){
 	double x = sin(goal_long_rad - curr_long_rad)* cos(goal_lat_rad);
 	double y = cos(curr_lat_rad)*sin(goal_lat_rad) - sin(curr_lat_rad)*cos(goal_lat_rad)*cos(goal_long_rad-curr_long_rad);
 	brng = (atan2(y, x) * 180 /M_PI);
-	dtostrf(brng, 10, 7, brng_str);
+	// dtostrf(brng, 10, 7, brng_str);
+	brng_int = (int16_t)brng;
+
+	
 	
 	if(brng > -22.5 && brng <= 22.5){
 		curr_direction = 0;
@@ -229,7 +232,7 @@ void drawGPS(){
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 		//show the distance between current and goal
-		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Distance: %s %s feet", curr_direction_str,  curr_distance_str);
+		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Distance: %i %s %s feet", brng_int, curr_direction_str,  curr_distance_str);
 		draw_box(10, 70, LCD_Width-20, 80, background_color_test);
 		drawString(lcd_output_buf, 50, 12, 72, text_color, 1);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
@@ -292,7 +295,7 @@ void drawCompass(){
 		strcpy(compass_heading, "SE");
 	}
 
-	snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Est. Compass Heading: %s", compass_heading);
+	snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Est. Compass Heading: %i %s", mag_direction, compass_heading);
 		draw_box(10, 90, LCD_Width-20, 100, background_color_test);
 		drawString(lcd_output_buf, 50, 12, 92, text_color, 1);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
