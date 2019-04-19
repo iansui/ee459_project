@@ -16,7 +16,9 @@ const char location_data_1[] PROGMEM = {"Hello Neil."};
 const char location_lat_1[] PROGMEM = {"34.020134"};
 const char location_long_1[] PROGMEM = {"-118.288520"};
 
-const char* const location_name_table[] PROGMEM = {location_name_0, location_name_1};
+const char ending[] PROGMEM = {"Thank you for playing. We hope you  enjoyed our EE459 project!"};
+
+const char* const location_name_table[] PROGMEM = {location_name_0, location_name_1, ending};
 const char* const location_data_table[] PROGMEM = {location_data_0, location_data_1};
 const char* const location_lat_table[] PROGMEM = {location_lat_0, location_lat_1};
 const char* const location_long_table[] PROGMEM = {location_long_0, location_long_1};

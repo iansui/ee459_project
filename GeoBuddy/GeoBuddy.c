@@ -24,11 +24,28 @@
 void location_init(){
 
     location_index = 0;
-	location_size = 1;
+	location_size = 2;
+
+	memset(goal_name, 0, sizeof(goal_name));
+	strcpy_P(goal_name, (char *)pgm_read_word(&(location_name_table[location_index])));
+	
+	memset(goal_data, 0, sizeof(goal_data));
+	strcpy_P(goal_data, (char *)pgm_read_word(&(location_data_table[location_index])));
+
+	memset(goal_lat_str, 0, sizeof(goal_lat_str));
+	strcpy_P(goal_lat_str, (char *)pgm_read_word(&(location_lat_table[location_index])));
+
+	memset(goal_long_str, 0, sizeof(goal_long_str));
+	strcpy_P(goal_long_str, (char *)pgm_read_word(&(location_long_table[location_index])));
+
+	goal_lat = atof(goal_lat_str);
+	goal_long = atof(goal_long_str);
 	
 }
 
 void location_load_next(){
+
+	location_index++;
 
 	memset(goal_name, 0, sizeof(goal_name));
 	strcpy_P(goal_name, (char *)pgm_read_word(&(location_name_table[location_index])));
@@ -45,7 +62,6 @@ void location_load_next(){
 	goal_lat = atof(goal_lat_str);
 	goal_long = atof(goal_long_str);
 
-    location_index++;
 }
 
 
@@ -65,6 +81,7 @@ void update_user_location(){
 	dtostrf(curr_long, 10, 7, curr_long_str);
 
 
+/*
 
 	if(fix == 0){
 		snprintf(serial_output_buf, sizeof(serial_output_buf), "DateTime: %u-%u-%u %u:%u:%u \r\n"
@@ -82,6 +99,8 @@ void update_user_location(){
 	}
 	serial_string_out(serial_output_buf);
 	memset(serial_output_buf, 0, sizeof(serial_output_buf));
+
+	*/
 
 }
 
@@ -320,7 +339,7 @@ int main(void){
     DDRC |= LCD_Ctrl_B;         // Set control port bits for output
     lcd_init();               // Initialize the LCD display
 	background_color = color565(220, 30, 58); // cardinal red
-	background_color_test = color565(0, 0, 0);
+	background_color_test = color565(220, 30, 58);
 	text_color = color565(255, 255, 0);
 	arrow_color = color565(255, 255, 0);
 
@@ -342,7 +361,6 @@ int main(void){
 
 	// initialize location
 	location_init();
-	location_load_next();
 
 	//draw background
 	draw_box(0, 0, LCD_Width-1, LCD_Height-1, background_color);
@@ -397,8 +415,6 @@ int main(void){
 
 				if(curr_distance <= arrive_threshold){
 					state = 4;
-
-					_delay_ms(3000);
 				}
 
 			}
@@ -412,12 +428,55 @@ int main(void){
 
 			//draw arrive button
 			draw_box(0, 220, LCD_Width-1, LCD_Height-1, text_color);
+			snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Next");
+			drawString(lcd_output_buf, 50, 70, 255, background_color, 4);
+			memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 			while(true){
+				update_touch();
+
+				if(touches > 0 && touchX[0] >= 0 && touchY[0] >= 220){
+					if(location_index == location_size-1){
+						state = 5;
+						break;
+					
+					}
+					else{
+						state = 6;
+						break;
+					}
+				}
+			}
+		}
+
+		if(state == 5){
+			draw_box(0, 0, LCD_Width-1, LCD_Height-1, background_color);
+			strcpy_P(lcd_output_buf, (char *)pgm_read_word(&(location_name_table[location_index+1])));
+			drawParagragh(lcd_output_buf, sizeof(lcd_output_buf), text_color);
+			memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
+
+			while(1){
 
 			}
 
 		}
+
+		if(state == 6){
+			draw_box(0, 0, LCD_Width-1, LCD_Height-1, background_color);
+			location_load_next();
+			gps_read_new();
+			if(fix == 0){
+				state = 2;
+			}
+			else{
+				state = 3;
+			}
+		}
+
+		// snprintf(serial_output_buf, sizeof(serial_output_buf),
+		// "state: %i\r\n", state);
+		// serial_string_out(serial_output_buf);
+		// memset(serial_output_buf, 0, sizeof(serial_output_buf));
 
 		// if(gps_timer == 15){
 		// 	gps_read_new();
