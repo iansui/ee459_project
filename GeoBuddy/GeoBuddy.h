@@ -34,7 +34,7 @@ uint16_t background_color_test;
 uint16_t text_color;
 uint16_t arrow_color;
 
-uint16_t arrive_threshold = 1000;
+uint16_t arrive_threshold = 50;
 
 uint8_t state;
 

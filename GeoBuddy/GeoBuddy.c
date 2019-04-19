@@ -24,7 +24,7 @@
 void location_init(){
 
     location_index = 0;
-	location_size = 2;
+	location_size = 4;
 
 	memset(goal_name, 0, sizeof(goal_name));
 	strcpy_P(goal_name, (char *)pgm_read_word(&(location_name_table[location_index])));
@@ -187,6 +187,22 @@ void drawGPS(){
 		drawString(lcd_output_buf, 50, 12, 12, text_color, 1);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
+		draw_box(10, 30, LCD_Width-20, 40, background_color_test);
+		strcpy(lcd_output_buf, "GPS not ready");
+		drawString(lcd_output_buf, 50, 12, 32, text_color, 1);
+		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
+
+		draw_box(10, 50, LCD_Width-20, 60, background_color_test);
+		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Fix: %d, Fix quality: %u", fix, fixquality);
+		drawString(lcd_output_buf, 50, 12, 52, text_color, 1);
+		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
+
+		draw_box(10, 70, LCD_Width-20, 80, background_color_test);
+		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Num of Satellites: %u", satellites);
+		drawString(lcd_output_buf, 50, 12, 72, text_color, 1);
+		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
+
+
 		// snprintf(lcd_output_buf, sizeof(lcd_output_buf), "mag dir: %i", mag_direction);
 		// draw_box(10, 30, LCD_Width-20, 40, background_color);
 		// drawString(lcd_output_buf, 50, 12, 32, text_color, 1);
@@ -282,10 +298,10 @@ void drawCompass(){
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 }
 
+
+/*
 void drawTouch(){
 
-
-	//draw test region
 	if(touches > 0){
 			draw_box(LCD_Width-100, 250, LCD_Width -1, LCD_Height-1, color565(255, 255, 0));
 	}
@@ -302,13 +318,13 @@ void drawTouch(){
 	draw_box(10, 270, LCD_Width-100, 280, background_color);
 	drawString(lcd_output_buf, 50, 12, 272, text_color, 1);
 	memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
-
 }
+
+*/
 
 
 void drawArrive(){
 
-	//show the name of the goal location
 	snprintf(lcd_output_buf, sizeof(lcd_output_buf), "%s", goal_name);
 	draw_box(10, 10, LCD_Width-20, 20, background_color_test);
 	drawString(lcd_output_buf, 50, 12, 12, text_color, 1);
@@ -319,7 +335,6 @@ void drawArrive(){
 	draw_box(10, 70, LCD_Width-20, 80, background_color_test);
 	draw_box(10, 90, LCD_Width-20, 100, background_color_test);
 	draw_box(70, 150, 170, 250, background_color_test);
-
 }
 
 
@@ -361,17 +376,6 @@ int main(void){
 	//draw background
 	draw_box(0, 0, LCD_Width-1, LCD_Height-1, background_color);
 
-	// snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Goal:     %s, %s", goal_lat_str, goal_long_str);
-	// 	drawString(lcd_output_buf, 50, 12, 252, text_color, 1);
-	// 	memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
-	
-	// draw_box(10, 10, LCD_Width-20, 20, background_color);
-	// draw_box(10, 30, LCD_Width-20, 40, background_color);
-	// draw_box(10, 50, LCD_Width-20, 60, background_color);
-	// draw_box(10, 70, LCD_Width-20, 80, background_color);
-	// draw_box(70, 100, 170, 200, background_color);
-
-
 	state = 1;
 
 	//start infinite loop
@@ -383,19 +387,23 @@ int main(void){
 
 		if(state == 1){
 
-			draw_box(0, 0, LCD_Width-1, 100, text_color);
+			// draw_box(0, 0, LCD_Width-1, 100, text_color);
 			snprintf(lcd_output_buf, sizeof(lcd_output_buf), "GeoBuddy");
 			drawString(lcd_output_buf, 50, 12, 30, text_color, 4);
 			memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 			snprintf(lcd_output_buf, sizeof(lcd_output_buf), "EE459 Project");
-			drawString(lcd_output_buf, 50, 12, 70, text_color, 3);
+			drawString(lcd_output_buf, 50, 12, 70, text_color, 2);
+			memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
+
+			snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Team 15");
+			drawString(lcd_output_buf, 50, 12, 95, text_color, 2);
 			memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 			//draw start button
 			draw_box(0, 220, LCD_Width-1, LCD_Height-1, text_color);
 			snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Start");
-			drawString(lcd_output_buf, 50, 40, 255, background_color, 4);
+			drawString(lcd_output_buf, 50, 60, 255, background_color, 4);
 			memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 			while(true){
@@ -403,11 +411,10 @@ int main(void){
 
 				if(touches > 0 && touchX[0] >= 0 && touchY[0] >= 220){
 					state = 2;
-					draw_box(0, 0, LCD_Width-1, 100, background_color);
+					draw_box(0, 0, LCD_Width-1, LCD_Height-1, background_color);
 					break;
 				}
 			}
-			
 		}
 
 		//state 2
@@ -453,11 +460,9 @@ int main(void){
 
 			//draw button
 			draw_box(0, 220, LCD_Width-1, LCD_Height-1, text_color);
-
 			if(location_index == location_size-1){
 				snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Finish");
-				drawString(lcd_output_buf, 50, 40, 255, background_color, 4);
-
+				drawString(lcd_output_buf, 50, 50, 255, background_color, 4);
 			}
 			else{
 				snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Next");
@@ -472,7 +477,6 @@ int main(void){
 					if(location_index == location_size-1){
 						state = 5;
 						break;
-					
 					}
 					else{
 						state = 6;
@@ -491,7 +495,7 @@ int main(void){
 			//draw start button
 			draw_box(0, 220, LCD_Width-1, LCD_Height-1, text_color);
 			snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Back");
-			drawString(lcd_output_buf, 50, 50, 255, background_color, 4);
+			drawString(lcd_output_buf, 50, 70, 255, background_color, 4);
 			memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 			while(true){
@@ -499,10 +503,11 @@ int main(void){
 
 				if(touches > 0 && touchX[0] >= 0 && touchY[0] >= 220){
 					state = 1;
+					location_init();
+					draw_box(0, 0, LCD_Width-1, LCD_Height-1, background_color);
 					break;
 				}
 			}
-
 		}
 
 		if(state == 6){
