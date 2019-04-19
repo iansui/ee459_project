@@ -392,24 +392,24 @@ void drawHLine(int16_t x, int16_t y,int16_t length, uint16_t color) {
 void drawDirectionArrow(uint16_t direction, uint16_t color){
     //draw N arrow
     if(direction == 2){
-        draw_box(110, 130, 130, 170, color);
-        drawTriangle(100, 130, 120, 110, 140, 130, color);
+        draw_box(110, 180, 130, 220, color);
+        drawTriangle(100, 180, 120, 160, 140, 180, color);
     }
     //draw S arrow
     if(direction == 6){
-        draw_box(110, 130, 130, 170, color);
-        drawTriangle(100, 170, 120, 190, 140, 170, color);
+        draw_box(110, 180, 130, 220, color);
+        drawTriangle(100, 220, 120, 240, 140, 220, color);
     }
     //draw E arrow
     if(direction == 0){
-        draw_box(100, 140, 140, 160, color);
-        drawTriangle(160, 150, 140, 130, 140, 170, color);
+        draw_box(100, 190, 140, 210, color);
+        drawTriangle(160, 200, 140, 180, 140, 220, color);
     }
 
     //draw W arrow
     if(direction == 4){
-        draw_box(100, 140, 140, 160, color);
-        drawTriangle(80, 150, 100, 130, 100, 170, color);
+        draw_box(100, 190, 140, 210, color);
+        drawTriangle(80, 200, 100, 180, 100, 220, color);
     }
 
     //draw NE arrow
@@ -434,9 +434,9 @@ void drawDirectionArrow(uint16_t direction, uint16_t color){
         // drawTriangle(x3, y3, x1, y1, x2, y2, color);
         // drawTriangle(x4, y4, x5, y5, x6, y6, color);
 
-        drawTriangle(98, 157, 141, 142, 127, 128, color);
-        drawTriangle(98, 157, 142, 142, 112, 171, color);
-        drawTriangle(148, 121, 120, 121, 148, 150, color);
+        drawTriangle(98, 207, 141, 192, 127, 178, color);
+        drawTriangle(98, 207, 142, 192, 112, 221, color);
+        drawTriangle(148, 171, 120, 171, 148, 200, color);
     }
 
     //draw SW arrow
@@ -460,9 +460,9 @@ void drawDirectionArrow(uint16_t direction, uint16_t color){
         // drawTriangle(x3, y3, x1, y1, x2, y2, color);
         // drawTriangle(x4, y4, x5, y5, x6, y6, color);
 
-        drawTriangle(98, 157, 141, 142, 127, 128, color);
-        drawTriangle(98, 157, 141, 142, 112, 171, color);
-        drawTriangle(91, 178, 91, 150, 120, 178, color);
+        drawTriangle(98, 207, 141, 192, 127, 178, color);
+        drawTriangle(98, 207, 141, 192, 112, 221, color);
+        drawTriangle(91, 228, 91, 200, 120, 228, color);
     }
 
     //draw NW arrow
@@ -487,9 +487,9 @@ void drawDirectionArrow(uint16_t direction, uint16_t color){
         // drawTriangle(x3, y3, x1, y1, x2, y2, color);
         // drawTriangle(x4, y4, x5, y5, x6, y6, color);
 
-        drawTriangle(112, 128, 127, 171, 141, 157, color);
-        drawTriangle(112, 128, 127, 171, 98, 142, color);
-        drawTriangle(91, 121, 120, 121, 91, 150, color);
+        drawTriangle(112, 178, 127, 221, 141, 207, color);
+        drawTriangle(112, 178, 127, 221, 98, 192, color);
+        drawTriangle(91, 171, 120, 171, 91, 200, color);
     }
 
     //draw SE arrow
@@ -514,9 +514,9 @@ void drawDirectionArrow(uint16_t direction, uint16_t color){
         // drawTriangle(x3, y3, x1, y1, x2, y2, color);
         // drawTriangle(x4, y4, x5, y5, x6, y6, color);
 
-        drawTriangle(112, 128, 127, 171, 141, 157, color);
-        drawTriangle(112, 128, 127, 171, 98, 142, color);
-        drawTriangle(148, 178, 148, 150, 120, 178, color);
+        drawTriangle(112, 178, 127, 221, 141, 207, color);
+        drawTriangle(112, 178, 127, 221, 98, 192, color);
+        drawTriangle(148, 228, 148, 200, 120, 228, color);
     }
 }
 

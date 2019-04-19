@@ -11,6 +11,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/eeprom.h>
+#include <avr/pgmspace.h>
 
 #include "gps.h"
 #include "serial.h"
@@ -18,6 +19,34 @@
 #include "GeoBuddy.h"
 #include "i2c.h"
 #include "compass.h"
+#include "location.h"
+
+void location_init(){
+
+    location_index = 0;
+	location_size = 1;
+	
+}
+
+void location_load_next(){
+
+	memset(goal_name, 0, sizeof(goal_name));
+	strcpy_P(goal_name, (char *)pgm_read_word(&(location_name_table[location_index])));
+	
+	memset(goal_data, 0, sizeof(goal_data));
+	strcpy_P(goal_data, (char *)pgm_read_word(&(location_data_table[location_index])));
+
+	memset(goal_lat_str, 0, sizeof(goal_lat_str));
+	strcpy_P(goal_lat_str, (char *)pgm_read_word(&(location_lat_table[location_index])));
+
+	memset(goal_long_str, 0, sizeof(goal_long_str));
+	strcpy_P(goal_long_str, (char *)pgm_read_word(&(location_long_table[location_index])));
+
+	goal_lat = atof(goal_lat_str);
+	goal_long = atof(goal_long_str);
+
+    location_index++;
+}
 
 
 void update_user_location(){
@@ -35,7 +64,7 @@ void update_user_location(){
 	dtostrf(curr_lat, 10, 7, curr_lat_str);
 	dtostrf(curr_long, 10, 7, curr_long_str);
 
-/*
+
 
 	if(fix == 0){
 		snprintf(serial_output_buf, sizeof(serial_output_buf), "DateTime: %u-%u-%u %u:%u:%u \r\n"
@@ -53,7 +82,7 @@ void update_user_location(){
 	}
 	serial_string_out(serial_output_buf);
 	memset(serial_output_buf, 0, sizeof(serial_output_buf));
-*/
+
 }
 
 
@@ -117,8 +146,7 @@ void update_distance(){
 		strcpy(curr_direction_str, "SE");
 	}
 
-	dtostrf(goal_lat, 10, 7, goal_lat_str);
-	dtostrf(goal_long, 10, 7, goal_long_str);
+	
 
 /*
 	//output current distance and direction data through serial connection
@@ -138,51 +166,54 @@ void drawGPS(){
 	
 	//if fix is 0, don't print any data yet
 	if(fix == 0){
-		draw_box(10, 10, LCD_Width-20, 20, background_color);
-		strcpy(lcd_output_buf, "Fetching GPS DATA.....");
+		draw_box(10, 10, LCD_Width-20, 20, background_color_test);
+		strcpy(lcd_output_buf, "Fetching GPS DATA...");
 		drawString(lcd_output_buf, 50, 12, 12, text_color, 1);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
-		// for(int i = 0; i < 8; i++){
-		// 	draw_box(70, 100, 170, 200, background_color);
-		// 	drawDirectionArrow(i, arrow_color);
-		// 	_delay_ms(5);
-		// }
-
-
-		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "mag dir: %i", mag_direction);
-		draw_box(10, 30, LCD_Width-20, 40, background_color);
-		drawString(lcd_output_buf, 50, 12, 32, text_color, 1);
-		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
-
+		// snprintf(lcd_output_buf, sizeof(lcd_output_buf), "mag dir: %i", mag_direction);
+		// draw_box(10, 30, LCD_Width-20, 40, background_color);
+		// drawString(lcd_output_buf, 50, 12, 32, text_color, 1);
+		// memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 	}
 	else{
 		//show the name of the goal location
-		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "%s", goal_title);
-		draw_box(10, 10, LCD_Width-20, 20, background_color);
+		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "%s", goal_name);
+		draw_box(10, 10, LCD_Width-20, 20, background_color_test);
 		drawString(lcd_output_buf, 50, 12, 12, text_color, 1);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 		//show the coordinates of the goal location
 		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Goal:     %s, %s", goal_lat_str, goal_long_str);
-		draw_box(10, 30, LCD_Width-20, 40, background_color);
+		draw_box(10, 30, LCD_Width-20, 40, background_color_test);
 		drawString(lcd_output_buf, 50, 12, 32, text_color, 1);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 		//show the coordinates of the current location
 		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Current:  %s, %s", curr_lat_str, curr_long_str);
-		draw_box(10, 50, LCD_Width-20, 60, background_color);
+		draw_box(10, 50, LCD_Width-20, 60, background_color_test);
 		drawString(lcd_output_buf, 50, 12, 52, text_color, 1);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 		//show the distance between current and goal
 		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Distance: %s %s feet", curr_direction_str,  curr_distance_str);
-		draw_box(10, 70, LCD_Width-20, 80, background_color);
+		draw_box(10, 70, LCD_Width-20, 80, background_color_test);
 		drawString(lcd_output_buf, 50, 12, 72, text_color, 1);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
+		//draw direction arrow
+		draw_box(70, 150, 170, 250, background_color_test);
+		drawDirectionArrow(curr_direction, arrow_color);
 
+		// for(int i = 0; i < 8; i++){
+		// 	draw_box(70, 150, 170, 250, background_color);
+		// 	drawDirectionArrow(i, arrow_color);
+		// 	_delay_ms(100);
+		// }
+
+
+/*
 		if(curr_distance > arrive_threshold){
 			//draw direction arrow
 			draw_box(70, 100, 170, 200, background_color);
@@ -190,11 +221,45 @@ void drawGPS(){
 		}
 		else{
 			draw_box(10, 100, 230, 200, background_color);
-			drawParagragh(goal_info, sizeof(goal_info), text_color);
-			_delay_ms(100000);
+			drawParagragh(goal_data, sizeof(goal_data), text_color);
+			// _delay_ms(1000);
 			draw_box(10, 100, 230, 200, background_color_test);
 		}
+
+	*/
 	}
+}
+
+
+void drawCompass(){
+
+	char compass_heading[3];
+
+	if((mag_direction > 337.5 && mag_direction <= 360)|| (mag_direction > 0 && mag_direction <= 22.5)){
+		strcpy(compass_heading, "E ");
+	}
+	else if(mag_direction > 22.5 && mag_direction <= 67.5){
+		strcpy(compass_heading, "NE");
+	}
+	else if(mag_direction > 67.5 && mag_direction <= 112.5){
+		strcpy(compass_heading, "N ");
+	}
+	else if(mag_direction > 112.5  && mag_direction <= 157.5){
+		strcpy(compass_heading, "NW");
+	}
+	else if(mag_direction > 157.5 || mag_direction <= -157.5){
+		strcpy(compass_heading, "W ");
+	}
+	else if(mag_direction > -157.5 && mag_direction <= -112.5){
+		strcpy(compass_heading, "SW");
+	}
+	else if(mag_direction > -112.5 && mag_direction <= -67.5){
+		strcpy(compass_heading, "S ");
+	}
+	else {
+		strcpy(compass_heading, "SE");
+	}
+
 }
 
 void drawTouch(){
@@ -223,21 +288,24 @@ void drawTouch(){
 
 int main(void){
 
-	//initialize the LCD
+	// init state
+	state = 1;
+
+	// initialize LCD
 	DDRB |= LCD_Data_B;         // Set PORTB bits 0-1 for output
     DDRD |= LCD_Data_D;         // Set PORTD bits 2-7 for output
     PORTC |= LCD_Ctrl_B;        // Set all the control lines high
     DDRC |= LCD_Ctrl_B;         // Set control port bits for output
     lcd_init();               // Initialize the LCD display
-	background_color = color565(255,255,255);
-	background_color_test = color565(0,0,255);
-	text_color = color565(0, 0, 0);
-	arrow_color = color565(255, 0, 0);
+	background_color = color565(220, 30, 58); // cardinal red
+	background_color_test = color565(0, 0, 0);
+	text_color = color565(255, 255, 0);
+	arrow_color = color565(255, 255, 0);
 
-	//initialize serial connection
+	// initialize serial connection
 	serial_init();
 
-	// Initialize the serial and gps interface
+	// initialize gps
 	gps_common_init();
 	int gps_timer = 0;
 
@@ -250,20 +318,25 @@ int main(void){
 	// initialize compass
 	compass_init();
 
-	//draw background
-	draw_box(0, 0, LCD_Width-1, LCD_Height-1, background_color_test);
-	draw_box(10, 10, LCD_Width-20, 20, background_color);
-	draw_box(10, 30, LCD_Width-20, 40, background_color);
-	draw_box(10, 50, LCD_Width-20, 60, background_color);
-	draw_box(10, 70, LCD_Width-20, 80, background_color);
-	draw_box(70, 100, 170, 200, background_color);
+	// initialize location
+	location_init();
+	location_load_next();
 
-	//set up testing data
-	goal_lat = 34.020506;
-	goal_long = -118.289114;
-	strcpy(goal_title, "Viterbi E-quad Fountain");
-	strncpy(goal_info, "This is a test message for drawParagraph(). If there is enough memory space, we can use this function to display some short info of the goal location. The max length is 6 lines with 36 char in each line", sizeof(goal_info));
-	// strncpy(goal_info, "test", sizeof(goal_info));
+	//draw background
+	draw_box(0, 0, LCD_Width-1, LCD_Height-1, background_color);
+
+	// snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Goal:     %s, %s", goal_lat_str, goal_long_str);
+	// 	drawString(lcd_output_buf, 50, 12, 252, text_color, 1);
+	// 	memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
+	
+	// draw_box(10, 10, LCD_Width-20, 20, background_color);
+	// draw_box(10, 30, LCD_Width-20, 40, background_color);
+	// draw_box(10, 50, LCD_Width-20, 60, background_color);
+	// draw_box(10, 70, LCD_Width-20, 80, background_color);
+	// draw_box(70, 100, 170, 200, background_color);
+
+
+	state = 2;
 
 	//start infinite loop
 	while(1){
@@ -272,25 +345,57 @@ int main(void){
 
 		++gps_timer;
 
-		if(gps_timer == 15){
+		//state 2
+		if(state == 2 && gps_timer == 15){
 			gps_read_new();
-
-			update_user_location();
-
-			update_distance();
-
-
-			update_compass();
-
-			
-			drawGPS();
 			gps_timer = 0;
+			drawGPS();
+
+			if(fix != 0){
+				state = 3;
+			}
+		}
+
+		if(state == 3){
+			if(gps_timer == 15){
+				gps_read_new();
+				gps_timer = 0;
+
+				if(fix == 0){
+					state = 2;
+					continue;
+				}
+
+				update_user_location();
+				update_distance();
+				drawGPS();
+
+				update_compass();
+
+			}
 
 		}
 
-		update_touch();
-		drawTouch();
+		// if(gps_timer == 15){
+		// 	gps_read_new();
+
+		// 	update_user_location();
+
+		// 	update_distance();
+
+
+		// 	update_compass();
+
+			
+		// 	drawGPS();
+		// 	gps_timer = 0;
+
+		// }
+
+		// update_touch();
+		// drawTouch();
 
 	}
 
+	
 }

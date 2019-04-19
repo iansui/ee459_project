@@ -34,7 +34,7 @@ uint8_t compass_init(){
 uint8_t update_compass(){
 
 
-     char compass_output_buff[256];
+    //  char compass_output_buff[256];
 
 
     uint8_t valid = 0;
@@ -110,9 +110,10 @@ uint8_t update_compass(){
 
     float mag_direction_f = atan2(mag_y, mag_x) * 180 / M_PI;
 
-    mag_direction = (int16_t)mag_direction_f;
+    mag_direction = (int16_t)mag_direction_f + 180;
 
     
+    /*
 
     dtostrf(mag_x, 10, 7, mag_x_str);
     dtostrf(mag_y, 10, 7, mag_y_str);
@@ -158,7 +159,7 @@ uint8_t update_compass(){
 		memset(compass_output_buff, 0, sizeof(compass_output_buff));
 
         
-
+    */
 
     return 0;
 

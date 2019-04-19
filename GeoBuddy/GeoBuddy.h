@@ -11,8 +11,8 @@ double goal_lat;
 double goal_long;
 char goal_lat_str[15];
 char goal_long_str[15];
-char goal_title[30];
-char goal_info[216];
+char goal_name[30];
+char goal_data[216];
 
 double curr_lat;
 double curr_long;
@@ -33,5 +33,7 @@ uint16_t text_color;
 uint16_t arrow_color;
 
 int arrive_threshold = 50;
+
+uint8_t state;
 
 #endif
