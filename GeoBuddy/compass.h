@@ -35,14 +35,11 @@ float mag_z;
 uint8_t compass_init();
 uint8_t update_compass();
 
-char compass_output_buff[256];
 
 char mag_x_str[16];
 char mag_y_str[16];
 char mag_z_str[16];
 
-uint16_t mag_direction;
-
-
+int16_t mag_direction;
 
 #endif

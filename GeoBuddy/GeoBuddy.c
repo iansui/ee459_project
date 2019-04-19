@@ -17,6 +17,7 @@
 #include "lcd.h"
 #include "GeoBuddy.h"
 #include "i2c.h"
+#include "compass.h"
 
 
 void update_user_location(){
@@ -34,6 +35,7 @@ void update_user_location(){
 	dtostrf(curr_lat, 10, 7, curr_lat_str);
 	dtostrf(curr_long, 10, 7, curr_long_str);
 
+/*
 
 	if(fix == 0){
 		snprintf(serial_output_buf, sizeof(serial_output_buf), "DateTime: %u-%u-%u %u:%u:%u \r\n"
@@ -51,7 +53,7 @@ void update_user_location(){
 	}
 	serial_string_out(serial_output_buf);
 	memset(serial_output_buf, 0, sizeof(serial_output_buf));
-
+*/
 }
 
 
@@ -118,7 +120,7 @@ void update_distance(){
 	dtostrf(goal_lat, 10, 7, goal_lat_str);
 	dtostrf(goal_long, 10, 7, goal_long_str);
 
-
+/*
 	//output current distance and direction data through serial connection
 	snprintf(serial_output_buf, sizeof(serial_output_buf),
 	 "Goal loc: %s, %s\r\n"
@@ -128,7 +130,7 @@ void update_distance(){
 	 , goal_lat_str, goal_long_str, curr_lat_str, curr_long_str, curr_direction_str, brng_str, curr_distance_str);
 	serial_string_out(serial_output_buf);
 	memset(serial_output_buf, 0, sizeof(serial_output_buf));
-
+*/
 
 }
 
@@ -146,6 +148,13 @@ void drawGPS(){
 		// 	drawDirectionArrow(i, arrow_color);
 		// 	_delay_ms(5);
 		// }
+
+
+		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "mag dir: %i", mag_direction);
+		draw_box(10, 30, LCD_Width-20, 40, background_color);
+		drawString(lcd_output_buf, 50, 12, 32, text_color, 1);
+		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
+
 
 	}
 	else{
@@ -211,6 +220,7 @@ void drawTouch(){
 
 }
 
+
 int main(void){
 
 	//initialize the LCD
@@ -237,6 +247,9 @@ int main(void){
 	// initialize touch
 	touch_init();	
 
+	// initialize compass
+	compass_init();
+
 	//draw background
 	draw_box(0, 0, LCD_Width-1, LCD_Height-1, background_color_test);
 	draw_box(10, 10, LCD_Width-20, 20, background_color);
@@ -250,32 +263,29 @@ int main(void){
 	goal_long = -118.289114;
 	strcpy(goal_title, "Viterbi E-quad Fountain");
 	strncpy(goal_info, "This is a test message for drawParagraph(). If there is enough memory space, we can use this function to display some short info of the goal location. The max length is 6 lines with 36 char in each line", sizeof(goal_info));
+	// strncpy(goal_info, "test", sizeof(goal_info));
 
 	//start infinite loop
 	while(1){
 
-		// _delay_ms(1);
+		_delay_ms(1);
 
 		++gps_timer;
 
 		if(gps_timer == 15){
 			gps_read_new();
 
-			update_touch();
-			drawTouch();
-
 			update_user_location();
-
-			update_touch();
-			drawTouch();
 
 			update_distance();
 
-			update_touch();
-			drawTouch();
+
+			update_compass();
+
 			
 			drawGPS();
 			gps_timer = 0;
+
 		}
 
 		update_touch();
