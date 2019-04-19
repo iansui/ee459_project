@@ -247,18 +247,23 @@ void drawCompass(){
 	else if(mag_direction > 112.5  && mag_direction <= 157.5){
 		strcpy(compass_heading, "NW");
 	}
-	else if(mag_direction > 157.5 || mag_direction <= -157.5){
+	else if(mag_direction > 157.5 || mag_direction <= 202.5){
 		strcpy(compass_heading, "W ");
 	}
-	else if(mag_direction > -157.5 && mag_direction <= -112.5){
+	else if(mag_direction > 202.5 && mag_direction <= 247.5){
 		strcpy(compass_heading, "SW");
 	}
-	else if(mag_direction > -112.5 && mag_direction <= -67.5){
+	else if(mag_direction > 247.5 && mag_direction <= 292.5){
 		strcpy(compass_heading, "S ");
 	}
 	else {
 		strcpy(compass_heading, "SE");
 	}
+
+	snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Est. Compass: %s", compass_heading);
+		draw_box(10, 90, LCD_Width-20, 100, background_color_test);
+		drawString(lcd_output_buf, 50, 12, 92, text_color, 1);
+		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
 }
 
@@ -282,6 +287,23 @@ void drawTouch(){
 	draw_box(10, 270, LCD_Width-100, 280, background_color);
 	drawString(lcd_output_buf, 50, 12, 272, text_color, 1);
 	memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
+
+}
+
+
+void drawArrive(){
+
+	//show the name of the goal location
+	snprintf(lcd_output_buf, sizeof(lcd_output_buf), "%s", goal_name);
+	draw_box(10, 10, LCD_Width-20, 20, background_color_test);
+	drawString(lcd_output_buf, 50, 12, 12, text_color, 1);
+	memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
+
+	draw_box(10, 30, LCD_Width-20, 40, background_color_test);
+	draw_box(10, 50, LCD_Width-20, 60, background_color_test);
+	draw_box(10, 70, LCD_Width-20, 80, background_color_test);
+	draw_box(10, 90, LCD_Width-20, 100, background_color_test);
+	draw_box(70, 150, 170, 250, background_color_test);
 
 }
 
@@ -371,6 +393,27 @@ int main(void){
 				drawGPS();
 
 				update_compass();
+				drawCompass();
+
+				if(curr_distance <= arrive_threshold){
+					state = 4;
+
+					_delay_ms(3000);
+				}
+
+			}
+		}
+
+		if(state == 4){
+			drawArrive();
+
+			draw_box(10, 50, 230, 190, background_color_test);
+			drawParagragh(goal_data, sizeof(goal_data), text_color);
+
+			//draw arrive button
+			draw_box(0, 220, LCD_Width-1, LCD_Height-1, text_color);
+
+			while(true){
 
 			}
 

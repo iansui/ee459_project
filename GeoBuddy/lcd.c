@@ -307,22 +307,20 @@ void drawString(char* str, int size, int16_t x, int16_t y, uint16_t color, uint8
 
 void drawParagragh(char* str, int size, uint16_t color){
     
-    char line[37];
+    char line[36];
     int counter = 0;
-    int line_y = 110;
+    int line_y = 50;
     while(1){
         if(size <= 36 || (counter + 36 > size)){
-            strncpy(line, &str[counter], sizeof(line)-1);
-            line[36] = '\0';
+            strncpy(line, &str[counter], sizeof(line));
             drawString(line, sizeof(line), 12, line_y, color, 1);
             return;
         }
         else{
-            strncpy(line, &str[counter], sizeof(line)-1);
-            line[36] = '\0';
+            strncpy(line, &str[counter], sizeof(line));
             drawString(line, sizeof(line), 12, line_y, color, 1);
             memset(line, 0, sizeof(line));
-            counter += (sizeof(line)-1);
+            counter += (sizeof(line));
             line_y += 12;
         }
     }
