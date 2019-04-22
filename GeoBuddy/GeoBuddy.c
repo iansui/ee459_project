@@ -1,6 +1,6 @@
-//sudo picocom --baud 9600 /dev/ttyUSB0
+//  use the following line to get serial output
+//  sudo picocom --baud 9600 /dev/ttyUSB0
 
-/*Inclusions*/
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -21,6 +21,8 @@
 #include "compass.h"
 #include "location.h"
 
+
+//	initialize location data
 void location_init(){
 
     location_index = 0;
@@ -40,9 +42,9 @@ void location_init(){
 
 	goal_lat = atof(goal_lat_str);
 	goal_long = atof(goal_long_str);
-	
 }
 
+//	load next location
 void location_load_next(){
 
 	location_index++;
@@ -61,13 +63,12 @@ void location_load_next(){
 
 	goal_lat = atof(goal_lat_str);
 	goal_long = atof(goal_long_str);
-
 }
 
 
+//	update user current location
 void update_user_location(){
 
-	//update current user location
 	curr_lat = lat_comp;	
 	curr_long = long_comp;	
 	if(lat == 'S'){
@@ -80,9 +81,8 @@ void update_user_location(){
 	dtostrf(curr_lat, 10, 7, curr_lat_str);
 	dtostrf(curr_long, 10, 7, curr_long_str);
 
-
+	// output data to serial
 /*
-
 	if(fix == 0){
 		snprintf(serial_output_buf, sizeof(serial_output_buf), "DateTime: %u-%u-%u %u:%u:%u \r\n"
 					"Fix: %d, Fix quality: %u, Num Satellites: %u\r\n",
@@ -103,6 +103,7 @@ void update_user_location(){
 	*/
 }
 
+// calculate distance and brng between curr and goal locations
 void update_distance(){
 
 	//don't update curr_distance if fix is 0
@@ -110,7 +111,6 @@ void update_distance(){
 		return;
 	}
 
-	//current current distance between the use and the goal location
 	long int R = 6371000;
 	double curr_lat_rad = curr_lat * M_PI / 180;
 	double curr_long_rad = curr_long * M_PI / 180;
@@ -123,14 +123,10 @@ void update_distance(){
 	curr_distance = (int)(R * c * 3.28084);
 	dtostrf(curr_distance, 1, 0, curr_distance_str);			
 
-	//calculate current direction of the goal location
 	double x = sin(goal_long_rad - curr_long_rad)* cos(goal_lat_rad);
 	double y = cos(curr_lat_rad)*sin(goal_lat_rad) - sin(curr_lat_rad)*cos(goal_lat_rad)*cos(goal_long_rad-curr_long_rad);
 	brng = (atan2(y, x) * 180 /M_PI);
-	// dtostrf(brng, 10, 7, brng_str);
 	brng_int = (int16_t)brng;
-
-	
 	
 	if(brng > -22.5 && brng <= 22.5){
 		curr_direction = 0;
@@ -165,10 +161,8 @@ void update_distance(){
 		strcpy(curr_direction_str, "SE");
 	}
 
-	
-
+	// output data to serial
 /*
-	//output current distance and direction data through serial connection
 	snprintf(serial_output_buf, sizeof(serial_output_buf),
 	 "Goal loc: %s, %s\r\n"
 	 "Current: %s, %s\r\n"
@@ -181,6 +175,7 @@ void update_distance(){
 
 }
 
+//	draw user location data on the LCD
 void drawGPS(){
 	
 	//if fix is 0, don't print any data yet
@@ -204,13 +199,6 @@ void drawGPS(){
 		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Num of Satellites: %u", satellites);
 		drawString(lcd_output_buf, 50, 12, 72, text_color, 1);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
-
-
-		// snprintf(lcd_output_buf, sizeof(lcd_output_buf), "mag dir: %i", mag_direction);
-		// draw_box(10, 30, LCD_Width-20, 40, background_color);
-		// drawString(lcd_output_buf, 50, 12, 32, text_color, 1);
-		// memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
-
 	}
 	else{
 		//show the name of the goal location
@@ -231,7 +219,7 @@ void drawGPS(){
 		drawString(lcd_output_buf, 50, 12, 52, text_color, 1);
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
-		//show the distance between current and goal
+		//show the distance and brngbetween current and goal
 		snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Distance: %i %s %s feet", brng_int, curr_direction_str,  curr_distance_str);
 		draw_box(10, 70, LCD_Width-20, 80, background_color_test);
 		drawString(lcd_output_buf, 50, 12, 72, text_color, 1);
@@ -240,32 +228,10 @@ void drawGPS(){
 		//draw direction arrow
 		draw_box(70, 150, 170, 250, background_color_test);
 		drawDirectionArrow(curr_direction, arrow_color);
-
-		// for(int i = 0; i < 8; i++){
-		// 	draw_box(70, 150, 170, 250, background_color);
-		// 	drawDirectionArrow(i, arrow_color);
-		// 	_delay_ms(100);
-		// }
-
-
-/*
-		if(curr_distance > arrive_threshold){
-			//draw direction arrow
-			draw_box(70, 100, 170, 200, background_color);
-			drawDirectionArrow(curr_direction, arrow_color);
-		}
-		else{
-			draw_box(10, 100, 230, 200, background_color);
-			drawParagragh(goal_data, sizeof(goal_data), text_color);
-			// _delay_ms(1000);
-			draw_box(10, 100, 230, 200, background_color_test);
-		}
-
-	*/
 	}
 }
 
-
+//	draw compass data on the LCD
 void drawCompass(){
 
 	char compass_heading[3];
@@ -301,31 +267,7 @@ void drawCompass(){
 		memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 }
 
-
-/*
-void drawTouch(){
-
-	if(touches > 0){
-			draw_box(LCD_Width-100, 250, LCD_Width -1, LCD_Height-1, color565(255, 255, 0));
-	}
-	else{
-			draw_box(LCD_Width-100, 250, LCD_Width -1, LCD_Height-1, color565(0, 255, 0));
-	}
-
-	snprintf(lcd_output_buf, sizeof(lcd_output_buf), "num of touches: %i", touches);
-	draw_box(10, 250, LCD_Width-100, 260, background_color);
-	drawString(lcd_output_buf, 50, 12, 252, text_color, 1);
-	memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
-
-	snprintf(lcd_output_buf, sizeof(lcd_output_buf), "point: %i %i", touchX[0], touchY[0]);
-	draw_box(10, 270, LCD_Width-100, 280, background_color);
-	drawString(lcd_output_buf, 50, 12, 272, text_color, 1);
-	memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
-}
-
-*/
-
-
+//	draw location name when user arrives
 void drawArrive(){
 
 	snprintf(lcd_output_buf, sizeof(lcd_output_buf), "%s", goal_name);
@@ -376,7 +318,7 @@ int main(void){
 	// initialize location
 	location_init();
 
-	//draw background
+	// draw background
 	draw_box(0, 0, LCD_Width-1, LCD_Height-1, background_color);
 
 	state = 1;
@@ -388,9 +330,9 @@ int main(void){
 
 		++gps_timer;
 
+		//  state 1, starting page
 		if(state == 1){
 
-			// draw_box(0, 0, LCD_Width-1, 100, text_color);
 			snprintf(lcd_output_buf, sizeof(lcd_output_buf), "GeoBuddy");
 			drawString(lcd_output_buf, 50, 12, 30, text_color, 4);
 			memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
@@ -403,12 +345,13 @@ int main(void){
 			drawString(lcd_output_buf, 50, 12, 95, text_color, 2);
 			memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
-			//draw start button
+			// draw start button
 			draw_box(0, 220, LCD_Width-1, LCD_Height-1, text_color);
 			snprintf(lcd_output_buf, sizeof(lcd_output_buf), "Start");
 			drawString(lcd_output_buf, 50, 60, 255, background_color, 4);
 			memset(lcd_output_buf, 0, sizeof(lcd_output_buf));
 
+			// get uset input
 			while(true){
 				update_touch();
 
@@ -420,7 +363,7 @@ int main(void){
 			}
 		}
 
-		//state 2
+		//  state 2, waiting for gix
 		if(state == 2 && gps_timer == 15){
 			gps_read_new();
 			gps_timer = 0;
@@ -431,6 +374,7 @@ int main(void){
 			}
 		}
 
+		//  state 3, updating gps data
 		if(state == 3){
 			if(gps_timer == 15){
 				gps_read_new();
@@ -455,6 +399,7 @@ int main(void){
 			}
 		}
 
+		// state 4, show location data
 		if(state == 4){
 			drawArrive();
 
@@ -489,6 +434,7 @@ int main(void){
 			}
 		}
 
+		// state 5, ending page
 		if(state == 5){
 			draw_box(0, 0, LCD_Width-1, LCD_Height-1, background_color);
 			strcpy_P(lcd_output_buf, (char *)pgm_read_word(&(location_name_table[location_index+1])));
@@ -513,6 +459,7 @@ int main(void){
 			}
 		}
 
+		// state 6, loading next location
 		if(state == 6){
 			draw_box(0, 0, LCD_Width-1, LCD_Height-1, background_color);
 			location_load_next();
@@ -524,32 +471,5 @@ int main(void){
 				state = 3;
 			}
 		}
-
-		// snprintf(serial_output_buf, sizeof(serial_output_buf),
-		// "state: %i\r\n", state);
-		// serial_string_out(serial_output_buf);
-		// memset(serial_output_buf, 0, sizeof(serial_output_buf));
-
-		// if(gps_timer == 15){
-		// 	gps_read_new();
-
-		// 	update_user_location();
-
-		// 	update_distance();
-
-
-		// 	update_compass();
-
-			
-		// 	drawGPS();
-		// 	gps_timer = 0;
-
-		// }
-
-		// update_touch();
-		// drawTouch();
-
 	}
-
-	
 }
