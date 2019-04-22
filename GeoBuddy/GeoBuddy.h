@@ -4,8 +4,6 @@
 void update_user_position();
 void update_distance();
 
-
-
 char serial_output_buf[256];
 char lcd_output_buf[45];
 

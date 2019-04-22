@@ -24,5 +24,4 @@ uint8_t i2c_io(uint8_t device_addr, uint8_t *ap, uint16_t an,
 bool touch_init();
 void update_touch();
 
-
 #endif

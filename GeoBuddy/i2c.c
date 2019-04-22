@@ -1,10 +1,13 @@
 #include "i2c.h"
 
+
+//  initialize i2c
 void i2c_init(uint8_t bdiv){
     TWSR = 0;           // Set prescalar for 1
     TWBR = bdiv;        // Set bit rate register
 }
 
+//  initialize touch screen
 bool touch_init(){
 
     touch_address = 0x70;
@@ -25,6 +28,8 @@ bool touch_init(){
         return false;
 	}
 }
+
+// from Prof. Weber's i2c lab
 /*
   i2c_io - write and read bytes to a slave I2C device
 
@@ -198,7 +203,7 @@ nakstop:                                    // Come here to send STOP after a NA
     return(status);
 }
 
-
+//  update touch data
 void update_touch(){
 
     // update num of touch points

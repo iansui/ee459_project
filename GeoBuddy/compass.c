@@ -1,26 +1,19 @@
 #include "compass.h"
-#include "i2c.h"
-#include "serial.h"
-#include <math.h>
-#include <string.h>
 
-
+//  initialize compass
 uint8_t compass_init(){
 
-    mag_address = 0x3C;//(0x3C >> 1);
+    mag_address = 0x3C;
     reg_mag_mr_reg_m = 0x02;
     reg_mag_cra_reg_m = 0x00;
     reg_mag_cra_reg_m = 0x01;
 
-
     uint8_t data = 0x00;
-
     uint8_t mag_status = i2c_io(mag_address, &reg_mag_mr_reg_m, 1, &data, 1, NULL, 0);
 
     uint8_t result = -1;
     mag_status = i2c_io(mag_address, &reg_mag_cra_reg_m, 1, NULL, 0, &result, 1);
 	
-
     _lsm303Mag_Gauss_LSB_XY = 1100;
     _lsm303Mag_Gauss_LSB_Z = 980;
 
@@ -31,11 +24,8 @@ uint8_t compass_init(){
     return mag_status;
 }
 
+//  update compass data
 uint8_t update_compass(){
-
-
-    //  char compass_output_buff[256];
-
 
     uint8_t valid = 0;
     uint8_t result = -1;
@@ -43,9 +33,6 @@ uint8_t update_compass(){
     uint8_t index = 0x03;
     valid = valid | i2c_io(mag_address, &index, 1, NULL, 0, &result, 1);
     if(valid != 0){
-
-       
-
         return 1;
     }
     uint8_t xhi = result;
@@ -53,9 +40,6 @@ uint8_t update_compass(){
     index = 0x04;
     valid = valid | i2c_io(mag_address, &index, 1, NULL, 0, &result, 1);
     if(valid != 0){
-
-       
-
         return 1;
     }
     uint8_t xlo= result;
@@ -63,10 +47,6 @@ uint8_t update_compass(){
     index = 0x05;
     valid = valid | i2c_io(mag_address, &index, 1, NULL, 0, &result, 1);
     if(valid != 0){
-
-
-      
-
         return 1;
     }
     uint8_t zhi = result;
@@ -74,10 +54,6 @@ uint8_t update_compass(){
     index = 0x06;
     valid = valid | i2c_io(mag_address, &index, 1, NULL, 0, &result, 1);
     if(valid != 0){
-
-
-      
-
         return 1;
     }
     uint8_t zlo = result;
@@ -85,9 +61,6 @@ uint8_t update_compass(){
     index = 0x07;
     valid = valid | i2c_io(mag_address, &index, 1, NULL, 0, &result, 1);
     if(valid != 0){
-
-       
-
         return 1;
     }
     uint8_t yhi = result;
@@ -95,7 +68,6 @@ uint8_t update_compass(){
     index = 0x08;
     valid = valid | i2c_io(mag_address, &index, 1, NULL, 0, &result, 1);
     if(valid != 0){
-
         return 1;
     }
     uint8_t ylo = result;
@@ -112,60 +84,5 @@ uint8_t update_compass(){
 
     mag_direction = (int16_t)mag_direction_f + 180;
 
-    
-    /*
-
-    dtostrf(mag_x, 10, 7, mag_x_str);
-    dtostrf(mag_y, 10, 7, mag_y_str);
-    dtostrf(mag_z, 10, 7, mag_z_str);
-
-    	snprintf(compass_output_buff, sizeof(compass_output_buff),
-	 "raw_x: %i\r\n", raw_x);
-		serial_string_out(compass_output_buff);
-		memset(compass_output_buff, 0, sizeof(compass_output_buff));
-
-        snprintf(compass_output_buff, sizeof(compass_output_buff),
-	 "raw_y: %i\r\n", raw_y);
-		serial_string_out(compass_output_buff);
-		memset(compass_output_buff, 0, sizeof(compass_output_buff));
-
-        snprintf(compass_output_buff, sizeof(compass_output_buff),
-	 "raw_z: %i\r\n", raw_z);
-		serial_string_out(compass_output_buff);
-		memset(compass_output_buff, 0, sizeof(compass_output_buff));
-
-
-        snprintf(compass_output_buff, sizeof(compass_output_buff),
-	 "mag_x: %s\r\n", mag_x_str);
-		serial_string_out(compass_output_buff);
-		memset(compass_output_buff, 0, sizeof(compass_output_buff));
-
-
-        snprintf(compass_output_buff, sizeof(compass_output_buff),
-	 "mag_y: %s\r\n", mag_y_str);
-		serial_string_out(compass_output_buff);
-		memset(compass_output_buff, 0, sizeof(compass_output_buff));
-
-
-        snprintf(compass_output_buff, sizeof(compass_output_buff),
-	 "mag_z: %s\r\n", mag_z_str);
-		serial_string_out(compass_output_buff);
-		memset(compass_output_buff, 0, sizeof(compass_output_buff));
-
-
-        snprintf(compass_output_buff, sizeof(compass_output_buff),
-	 "mag_direction: %i\r\n", mag_direction);
-		serial_string_out(compass_output_buff);
-		memset(compass_output_buff, 0, sizeof(compass_output_buff));
-
-        
-    */
-
     return 0;
-
-   
-
-    
-
 }
-

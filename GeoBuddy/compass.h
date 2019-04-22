@@ -6,12 +6,9 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
-
-
-// I2C ADDRESS/BITS
-// #define LSM303_ADDRESS_ACCEL          (0x32 >> 1)         // 0011001x
-// #define LSM303_ADDRESS_MAG            (0x3C >> 1)         // 0011110x
-
+#include <math.h>
+#include <string.h>
+#include "i2c.h"
 
 uint8_t accel_address;
 uint8_t mag_address;
@@ -31,10 +28,8 @@ float mag_x;
 float mag_y;
 float mag_z;
 
-
 uint8_t compass_init();
 uint8_t update_compass();
-
 
 char mag_x_str[16];
 char mag_y_str[16];

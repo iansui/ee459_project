@@ -1,10 +1,4 @@
-#include <avr/io.h>
-#include <string.h>
-#include <util/delay.h>
-
-#define FOSC 7372800
-#define BAUD 9600
-#define the_ubrr (FOSC/16/BAUD-1)
+#include "serial.h"
 
 /*
 	serial_init - Initialize the USART port

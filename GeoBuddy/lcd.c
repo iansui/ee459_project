@@ -4,61 +4,8 @@ uint8_t red[8] = { 0, 0xff, 0, 0, 0xff, 0, 0xff, 0xff };
 uint8_t grn[8] = { 0, 0, 0xff, 0, 0xff, 0xff, 0, 0xff };
 uint8_t blu[8] = { 0, 0, 0, 0xff, 0, 0xff, 0xff, 0xff };
 
-//  color_bars - Draw eight color bars on the full screen 
-/*
-void color_bars()
-{
-    uint8_t i, j, k;
-    uint16_t color;
-    uint16_t y1, y2;
-    uint8_t hi, lo;
 
-    for (j = 0; j < 8; j++) {
-	y1  = j * 40;                  // Row number of start of bar
-	y2 = y1 + 39;                  // Row number of end of bar
-	// Set window to a 240x40 strip from (0,y1) to (239,y2)
-	setAddrWindow(0, y1, LCD_Width-1, y2);
-
-	LCD_CS_Active;
-
-	LCD_CD_Command;
-	lcdout(ILI9341_MEMORYWRITE);        // Write to memory command
-
-	LCD_CD_Data;
-        color = color565(red[j], grn[j], blu[j]);
-        hi = color >> 8;
-        lo = color;
-
-        for (k = 0; k < 40; k++) {      // 40 rows in each bar
-            for (i = 0; i < 240; i++) { // 240 pixels in each row
-                lcdout(hi);
-                lcdout(lo);
-            }
-        }
-
-	LCD_CS_Negate;
-    }
-}
-*/
-
-
-
-//  boxes - Draws some boxes on the screen with different fill colors
-/*
-void boxes()
-{
-    draw_box(0, 0, LCD_Width-1, LCD_Height-1, color565(255,255,255));
-    draw_box(20, 30, 120, 200, color565(30, 255, 100));
-    draw_box(70, 180, 150, 270, color565(255, 40, 70));
-    draw_box(160, 10, 220, 300, color565(100, 10, 255));
-    draw_box(80, 50, 170, 120, color565(225, 200, 40));
-    draw_box(130, 130, 200, 315, color565(30, 240, 250));
-    draw_box(10, 260, 130, 300, color565(240, 30, 250));
-    draw_box(100, 100, 140, 140, color565(255, 0, 255));
-}
-*/
-
-/*
+/*  from Prof. Weber's LCD lab
   draw_box - Draw a box from (x1,y1), the upper left, to (x2,y2), the lower right
   and fill it with the color value in "color".
 */
@@ -220,7 +167,6 @@ void reset()
     _delay_us(2);      // Extend the reset a bit
     LCD_RST_Negate;
 
-    // Not sure why this is needed, or if it is.
     LCD_CS_Active;
     LCD_CD_Command;
     lcdout(0);
@@ -288,7 +234,7 @@ void drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color, uint8_t siz
 }
 
 /*
-draw a string with the first chat at (x, y)
+draw a string with the first char at (x, y)
 */
 
 void drawString(char* str, int size, int16_t x, int16_t y, uint16_t color, uint8_t font_size){
@@ -305,6 +251,7 @@ void drawString(char* str, int size, int16_t x, int16_t y, uint16_t color, uint8
     }
 }
 
+//  break a long string in to multiple lines and draw it
 void drawParagragh(char* str, int size, uint16_t color){
     
     char line[36];
@@ -387,6 +334,7 @@ void drawHLine(int16_t x, int16_t y,int16_t length, uint16_t color) {
     drawLine(x, y, x+length-1, y, color);
 }
 
+//  draw direction arrow
 void drawDirectionArrow(uint16_t direction, uint16_t color){
     //draw N arrow
     if(direction == 2){
@@ -517,119 +465,6 @@ void drawDirectionArrow(uint16_t direction, uint16_t color){
         drawTriangle(148, 228, 148, 200, 120, 228, color);
     }
 }
-
-
-/*
-
-
-void drawHLine(int16_t x, int16_t y, int16_t length, uint16_t color)
-{
-    int16_t x_length = x+length-1;
-
-    if((length <= 0) ||  (y < 0) || ( y>=LCD_Height) 
-    ||(x>= LCD_Width) || ((x+length-1) <0)) 
-        return;
-
-    if (x_length >= LCD_Width)
-    {
-        x_length = LCD_Width-1;
-        length = x_length -x+1;
-    }
-    setAddrWindow(x,y,x2,y);
-    flood(color,length);
-    LCD_CS_Negate;
-}
-
-void drawVLine(int16_t x, int16_t y, int16_t length,uint16_t color)
-{
-    int16_t y_length = y+length-1;
-
-    if((length <= 0) ||  (y < 0) || ( y>=LCD_Height) 
-    ||(x>= LCD_Width) || ((y+length-1) <0)) 
-        return;
-
-    if (y_length >= LCD_Height)
-    {
-        y_length = LCD_Height-1;
-        length = y_length -x+1;
-    }
-    setAddrWindow(x,y,x,y2);
-    flood(color,length);
-    LCD_CS_Negate;
-}
-
-
-// Block Fill
-void flood(uint16_t color, uint32_t len)
-{
-    uint8_t i;
-    LCD_CS_Active;
-    LCD_CD_Command;
-    lcdout(0x2c);
-
-    // Write the 1st pixel
-    LCD_CD_Data;
-    lcdout(color >> 8); 
-    lcdout(color);
-    length = length-1;
-    uint16_t blocks = (uint16_t)(length/64);
-    if (color == (color <<8))
-    {
-        while(blocks--)
-        {
-            i = 16;
-            do
-            {
-                LCD_WR_Active;           LCD_WR_Negate;
-                LCD_WR_Active;           LCD_WR_Negate;
-                LCD_WR_Active;           LCD_WR_Negate;
-                LCD_WR_Active;           LCD_WR_Negate;
-                LCD_WR_Active;           LCD_WR_Negate;
-                LCD_WR_Active;           LCD_WR_Negate;
-                LCD_WR_Active;           LCD_WR_Negate;
-                LCD_WR_Active;           LCD_WR_Negate;
-                LCD_WR_Active;           LCD_WR_Negate;
-
-            }while(--i);
-        }
-        
-        for(i = (uint8_t)length & 63;i>=0;i--)
-        {
-            LCD_WR_Active;           LCD_WR_Negate;
-            LCD_WR_Active;           LCD_WR_Negate;
-        }
-
-    }
-    else
-    {
-        while(blocks--)
-        {
-            i = 16
-            do
-            {
-                lcdout(color >> 8);     lcdout(color);
-                lcdout(color >> 8);     lcdout(color);
-                lcdout(color >> 8);     lcdout(color);
-                lcdout(color >> 8);     lcdout(color);
-                lcdout(color >> 8);     lcdout(color);
-                lcdout(color >> 8);     lcdout(color);
-                lcdout(color >> 8);     lcdout(color);
-                lcdout(color >> 8);     lcdout(color);
-
-            }while(--i);
-        }
-        for(i = (uint8_t)length & 63;i>=0;i--)
-        {
-            lcdout(color >> 8);     lcdout(color);
-        }
-
-    }
-
-    LCD_CS_Negate;
-
-}
-
-*/
 
 void drawTriangle(int16_t x0, int16_t y0,int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color)
 {

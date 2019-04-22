@@ -4,9 +4,7 @@
 #include <stdlib.h>
 #include <avr/pgmspace.h>
 
-
 const char location_name_0[] PROGMEM = {"Viterbi E-quad Fountain"};
-// const char location_data_0[] PROGMEM = {"This is a fountain."};
 const char location_data_0[] PROGMEM = {"This is the center of the Viterbi Engineering School. This is the place where engineering students hang out and work on their projects."};
 const char location_lat_0[] PROGMEM = {"34.020506"};
 const char location_long_0[] PROGMEM = {"-118.289114"};

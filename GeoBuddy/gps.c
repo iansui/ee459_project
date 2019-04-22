@@ -1,4 +1,3 @@
-
 #include <avr/io.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,7 +7,6 @@
 #include <util/delay.h>
 
 #include "gps.h"
-#include "serial.h"
 
 // how long are max NMEA lines to parse?
 #define MAXLINELENGTH 120
@@ -24,7 +22,6 @@ volatile char *lastline;
 volatile bool recvdflag;
 
 bool gps_parse(char *nmea) {
-  // do checksum check
 
   // first look if we even have one
   if (nmea[strlen(nmea)-4] == '*') {
@@ -75,7 +72,6 @@ bool gps_parse(char *nmea) {
       // latitude_fixed = (degree + minutes);
 
       lat_comp = (degree / 10000000)+(minutes * 0.000006F / 60);
-
 
       // latitude = (degree / 100000 + minutes * 0.000006F);
       // latitude_decimal = (degree / 10000000) + minutes * 0.0000001F;
@@ -230,7 +226,6 @@ bool gps_parse(char *nmea) {
 
       long_comp = (degree / 10000000)+(minutes * 0.000006F / 60);
 
-
       // longitude = degree / 100000 + minutes * 0.000006F;
       // longitude_decimal = (degree / 10000000) + minutes * 0.0000001F;
       // longitudeDegrees = (longitude-100*(int)(longitude/100))/60.0;
@@ -357,7 +352,6 @@ void gps_common_init(void) {
 bool gps_newNMEAreceived(void) {
   return recvdflag;
 }
-
 
 /*
 void gps_pause(bool p) {
