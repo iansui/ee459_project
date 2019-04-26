@@ -366,11 +366,13 @@ int main(void){
 
 		//  state 2, waiting for fix
 		if(state == 2 && gps_timer == 15){
+			demo_counter += 1;
 			gps_read_new();
 			gps_timer = 0;
 			drawGPS();
 
-			if(fix != 0){
+			if(fix != 0 && demo_counter == 5){
+				demo_counter = 0;
 				state = 3;
 			}
 		}
@@ -395,7 +397,7 @@ int main(void){
 				drawCompass();
 
 				//if(curr_distance <= arrive_threshold){
-				if(demo_counter == 3){
+				if(demo_counter == 5){
 					demo_counter = 0;
 					state = 4;
 				}
