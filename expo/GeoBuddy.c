@@ -396,6 +396,7 @@ int main(void){
 
 				//if(curr_distance <= arrive_threshold){
 				if(demo_counter == 3){
+					demo_counter = 0;
 					state = 4;
 				}
 
