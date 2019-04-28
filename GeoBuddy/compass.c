@@ -6,7 +6,7 @@ uint8_t compass_init(){
     mag_address = 0x3C;
     reg_mag_mr_reg_m = 0x02;
     reg_mag_cra_reg_m = 0x00;
-    reg_mag_cra_reg_m = 0x01;
+    reg_mag_crb_reg_m = 0x01;
 
     uint8_t data = 0x00;
     uint8_t mag_status = i2c_io(mag_address, &reg_mag_mr_reg_m, 1, &data, 1, NULL, 0);
