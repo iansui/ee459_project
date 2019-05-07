@@ -1,3 +1,17 @@
+/*
+EE459 Spring 2019
+Team 15
+Project name: GeoBuddy
+Ling Ye
+Brian Suitt
+Yi Sui
+*/
+
+/*
+gps.h and gps.c handle the communication between the
+microcontroller and the gps module thru USART
+*/
+
 #ifndef GPS_H
 #define GPS_H
 #include "serial.h"

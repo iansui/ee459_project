@@ -1,3 +1,18 @@
+/*
+EE459 Spring 2019
+Team 15
+Project name: GeoBuddy
+Ling Ye
+Brian Suitt
+Yi Sui
+*/
+
+/*
+compass.h and compass.c handle the communication between the
+microcontroller and the compass chip thru i2c
+*/
+
+
 #ifndef COMPASS_H
 #define COMPASS_H
 

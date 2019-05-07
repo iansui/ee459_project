@@ -1,3 +1,16 @@
+/*
+EE459 Spring 2019
+Team 15
+Project name: GeoBuddy
+Ling Ye
+Brian Suitt
+Yi Sui
+*/
+
+/*
+location.h contains the location data that is used by the main program
+*/
+
 #ifndef LOCATION_H
 #define LOCARION_H
 

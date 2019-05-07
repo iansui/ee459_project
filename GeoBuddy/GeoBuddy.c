@@ -1,3 +1,17 @@
+/*
+EE459 Spring 2019
+Team 15
+Project name: GeoBuddy
+Ling Ye
+Brian Suitt
+Yi Sui
+*/
+
+/*
+GeoBuddy.h and GeoBuddy.c contain the main program and other
+variables used by the main program
+*/
+
 //  use the following line to get serial output
 //  sudo picocom --baud 9600 /dev/ttyUSB0
 
@@ -363,7 +377,7 @@ int main(void){
 			}
 		}
 
-		//  state 2, waiting for gix
+		//  state 2, waiting for fix
 		if(state == 2 && gps_timer == 15){
 			gps_read_new();
 			gps_timer = 0;

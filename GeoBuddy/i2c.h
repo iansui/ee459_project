@@ -1,3 +1,17 @@
+/*
+EE459 Spring 2019
+Team 15
+Project name: GeoBuddy
+Ling Ye
+Brian Suitt
+Yi Sui
+*/
+
+/*
+i2c.h and i2c.c handle the initiazlization of i2c on the microcontrolelr,
+and the communication between the microcontroller and the touch data
+register in the LCD module
+*/
 
 #ifndef I2C_H
 #define I2C_H

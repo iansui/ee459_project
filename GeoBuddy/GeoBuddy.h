@@ -1,3 +1,17 @@
+/*
+EE459 Spring 2019
+Team 15
+Project name: GeoBuddy
+Ling Ye
+Brian Suitt
+Yi Sui
+*/
+
+/*
+GeoBuddy.h and GeoBuddy.c contain the main program and other
+variables used by the main program
+*/
+
 #ifndef GEOBUDDY_H
 #define GEOBUDDY_H
 	

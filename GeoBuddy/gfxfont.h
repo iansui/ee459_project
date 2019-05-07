@@ -1,3 +1,17 @@
+/*
+EE459 Spring 2019
+Team 15
+Project name: GeoBuddy
+Ling Ye
+Brian Suitt
+Yi Sui
+*/
+
+/*
+gfxfont.h and gfxfont.c contain the open-sourced Adafruit_GFX font
+which is used to show text on the LCD display
+*/
+
 // Font structures for newer Adafruit_GFX (1.1 and later).
 
 #ifndef _GFXFONT_H_

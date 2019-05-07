@@ -1,3 +1,17 @@
+/*
+EE459 Spring 2019
+Team 15
+Project name: GeoBuddy
+Ling Ye
+Brian Suitt
+Yi Sui
+*/
+
+/*
+lcd.h and lcd.c handle the communication between the microcontroller and 
+the LCD display and also the drawing part
+*/
+
 #include "lcd.h"
 
 uint8_t red[8] = { 0, 0xff, 0, 0, 0xff, 0, 0xff, 0xff };

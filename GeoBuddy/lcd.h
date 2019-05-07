@@ -1,3 +1,17 @@
+/*
+EE459 Spring 2019
+Team 15
+Project name: GeoBuddy
+Ling Ye
+Brian Suitt
+Yi Sui
+*/
+
+/*
+lcd.h and lcd.c handle the communication between the microcontroller and 
+the LCD display and also the drawing part
+*/
+
 #ifndef LCD_H
 #define LCD_H
 

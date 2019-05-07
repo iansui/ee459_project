@@ -1,3 +1,12 @@
+#
+# EE459 Spring 2019
+# Team 15
+# Project name: GeoBuddy
+# Ling Ye
+# Brian Suitt
+# Yi Sui
+# 
+
 DEVICE     = atmega328p
 CLOCK      = 7372800
 PROGRAMMER = -c usbtiny -P usb

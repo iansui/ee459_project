@@ -1,3 +1,19 @@
+/*
+EE459 Spring 2019
+Team 15
+Project name: GeoBuddy
+Ling Ye
+Brian Suitt
+Yi Sui
+*/
+
+/*
+serial.c and serial.h initiazlie and handle the USART communication between
+the microcontroller and the gps module.
+they can also be used to send out data thru the serial port on the project
+board for debugging
+*/
+
 #include "serial.h"
 
 /*
