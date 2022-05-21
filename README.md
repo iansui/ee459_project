@@ -1,5 +1,8 @@
 # EE459_project
 
+![alt text](https://i.imgur.com/btpFAS3.jpg)
+
+
 ## Modules  
 
 ### LCD Touchscreen  
